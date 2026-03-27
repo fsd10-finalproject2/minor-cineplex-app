@@ -32,13 +32,13 @@ const selectTab = (id: string | number) => {
       ]"
     >
       <span class="style-headline-4">{{ tab.label }}</span>
-      
+
       <!-- Underline Indicator -->
-      <div 
-        class="absolute bottom-0 left-0 w-full h-[3px] transition-all duration-300 transform"
+      <div
+        class="absolute bottom-0 left-0 w-full h-[2px] transition-all duration-300 transform"
         :class="[
-          modelValue === tab.id 
-            ? 'bg-blue-100 scale-x-100' 
+          modelValue === tab.id
+            ? 'bg-blue-100 scale-x-100'
             : 'bg-transparent scale-x-0 group-hover:bg-gray-400 group-hover:scale-x-50'
         ]"
       />

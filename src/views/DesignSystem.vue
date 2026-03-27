@@ -4,7 +4,8 @@ import { useTheme } from '@/composables/useTheme'
 import CustomButton from '@/components/ui/CustomButton.vue'
 import TabGroup from '@/components/ui/TabGroup.vue'
 import MenuLink from '@/components/ui/MenuLink.vue'
-import Pagination from '@/components/ui/Pagination.vue'
+import CustomPagination from '@/components/ui/CustomPagination.vue'
+import CaratButton from '@/components/ui/CaratButton.vue'
 import {
   CalendarIcon,
   ChevronDownIcon,
@@ -184,10 +185,10 @@ const totalPages = ref(20)
       <div class="space-y-8 p-10 bg-gray-400/5 rounded-2xl border border-gray-400 dark:border-gray-200">
         <div>
           <p class="style-label text-blue-100 mb-6">Interactive Preview</p>
-          <Pagination v-model:currentPage="currentPage" :totalPages="totalPages" />
+          <CustomPagination v-model:currentPage="currentPage" :totalPages="totalPages" />
           
-          <div class="mt-6 p-4 inline-block bg-blue-100/10 rounded-lg border border-blue-100/20">
-            <p class="style-body-3 text-blue-100 font-medium">
+          <div class="mt-8 p-4 bg-gray-100/10 rounded-xl border border-gray-100/20 max-w-sm">
+            <p class="style-body-3 text-gray-100 font-medium">
               You are currently on page: <strong>{{ currentPage }}</strong> of {{ totalPages }}
             </p>
           </div>
@@ -196,8 +197,8 @@ const totalPages = ref(20)
         <div class="pt-8 border-t border-gray-400/30 dark:border-gray-100/10">
           <p class="style-label text-gray-200 mb-4 opacity-70">Single Carat (from Figma)</p>
           <div class="flex gap-4">
-             <button class="p-2 rounded-lg border border-gray-400/30 text-gray-200 hover:text-white cursor-pointer"><ChevronLeftIcon class="size-6"/></button>
-             <button class="p-2 rounded-lg border border-gray-400/30 text-gray-200 hover:text-white cursor-pointer"><ChevronRightIcon class="size-6"/></button>
+             <CaratButton direction="left" class="bg-gray-0 rounded-lg p-2" />
+             <CaratButton direction="right" class="bg-gray-0 rounded-lg p-2" />
           </div>
         </div>
       </div>

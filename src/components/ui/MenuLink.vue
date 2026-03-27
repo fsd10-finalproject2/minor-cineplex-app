@@ -1,35 +1,35 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, type Component } from 'vue'
 
 const props = defineProps<{
   label: string
   active?: boolean
-  // Expecting a Vue Component for the icon
-  icon?: any 
+  icon?: Component
 }>()
 
-const activeClass = computed(() => 
-  props.active 
-    ? 'bg-blue-200/20 text-blue-100 border border-blue-200/30' 
-    : 'text-gray-200 hover:bg-gray-400/10 hover:text-white border border-transparent'
+const activeClass = computed(() =>
+  props.active
+    ? 'bg-gray-100 text-gray-300'
+    : 'bg-gray-0 text-gray-400 hover:bg-gray-100/30 hover:text-gray-300'
 )
 </script>
 
 <template>
   <div
-    class="flex items-center gap-4 px-5 py-4 rounded-xl transition-all duration-200 cursor-pointer group"
+    class="flex items-center gap-4 px-5 py-4 rounded-lg transition-all duration-200 cursor-pointer group select-none"
     :class="activeClass"
   >
-    <!-- Icon Slot or Prop -->
+    <!-- Icon Container -->
     <div class="shrink-0">
-      <component 
-        :is="icon" 
-        v-if="icon" 
-        class="size-6 transition-colors duration-200" 
-        :class="active ? 'text-blue-100' : 'text-gray-200 group-hover:text-white'"
+      <component
+        :is="icon"
+        v-if="icon"
+        class="size-6 transition-colors duration-200"
+        :class="active ? 'text-gray-200' : 'text-gray-300 group-hover:text-gray-200'"
       />
     </div>
 
+    <!-- Label -->
     <span class="style-body-1-medium whitespace-nowrap">
       {{ label }}
     </span>
