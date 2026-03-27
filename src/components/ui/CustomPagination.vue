@@ -14,23 +14,34 @@ const emit = defineEmits<{
 const pages = computed(() => {
   const current = props.currentPage
   const total = props.totalPages
-  
-  if (total <= 4) {
+
+  if (total <= 6) {
     return Array.from({ length: total }, (_, i) => i + 1)
   }
 
-  const range: (number | string)[] = []
-  range.push(current)
+  const rangeSet = new Set<number>()
+  rangeSet.add(1)
+  rangeSet.add(total)
 
-  if (current + 1 < total - 1) {
-    range.push(current + 1)
-    range.push('...')
+  // Show 2 neighbors on each side for that "symmetrical" Vuesax look
+  for (let i = current - 2; i <= current + 2; i++) {
+    if (i >= 1 && i <= total) rangeSet.add(i)
   }
 
-  if (!range.includes(total - 1)) range.push(total - 1)
-  if (!range.includes(total)) range.push(total)
+  const sortedRange = Array.from(rangeSet).sort((a, b) => a - b)
+  const rangeWithEllipsis: (number | string)[] = []
 
-  return range
+  for (let i = 0; i < sortedRange.length; i++) {
+    const page = sortedRange[i]
+    if (page === undefined) continue
+    rangeWithEllipsis.push(page)
+    const nextLocalPage = sortedRange[i + 1]
+    if (nextLocalPage !== undefined && nextLocalPage - page > 1) {
+      rangeWithEllipsis.push('...')
+    }
+  }
+
+  return rangeWithEllipsis
 })
 
 const changePage = (page: number | string) => {
@@ -41,22 +52,22 @@ const changePage = (page: number | string) => {
 </script>
 
 <template>
-  <div class="flex items-center flex-wrap gap-2 md:gap-3 select-none">
-    <!-- Prev Button -->
-    <CaratButton 
-      direction="left" 
-      :disabled="currentPage === 1" 
-      @click="changePage(currentPage - 1)" 
-      class="scale-90 md:scale-100"
-    />
+  <div class="flex items-center gap-2 md:gap-4 select-none">
+    <div class="scale-90 md:scale-100">
+      <CaratButton
+        direction="left"
+        :disabled="currentPage === 1"
+        @click="changePage(currentPage - 1)"
+        class="bg-gray-0 hover:bg-gray-100/20"
+      />
+    </div>
 
-    <!-- Page Numbers -->
-    <div class="flex items-center flex-wrap gap-1.5 md:gap-2">
+    <div class="flex items-center bg-gray-0 rounded-full px-1.5 py-1 gap-0.5 md:gap-1.5 border border-gray-400/10 shadow-inner">
       <template v-for="(page, index) in pages" :key="index">
         <!-- Ellipsis -->
         <div
           v-if="page === '...'"
-          class="w-9 h-9 md:w-11 md:h-11 flex items-center justify-center rounded-lg bg-gray-0 text-gray-300 pointer-events-none text-sm md:text-base"
+          class="w-8 h-8 md:w-10 md:h-10 flex items-center justify-center text-gray-300 pointer-events-none text-xs md:text-base px-1"
         >
           ...
         </div>
@@ -65,11 +76,13 @@ const changePage = (page: number | string) => {
         <button
           v-else
           @click="changePage(page as number)"
-          class="w-9 h-9 md:w-11 md:h-11 flex items-center justify-center rounded-lg transition-all duration-200 style-body-2-medium cursor-pointer text-sm md:text-base"
+          class="w-8 h-8 md:w-10 md:h-10 flex items-center justify-center rounded-full transition-all duration-300 style-body-3 md:style-body-2-medium cursor-pointer"
           :class="[
             currentPage === page
-              ? 'bg-gray-100 text-white shadow-lg'
-              : 'bg-gray-0 text-gray-300 hover:bg-gray-100/10 hover:text-white'
+              ? 'bg-gray-100 text-white scale-110 shadow-lg'
+              : 'text-gray-300 hover:text-white hover:bg-gray-100/10',
+            // Hide +/- 2 neighbors on mobile to keep the pill compact
+            (page === currentPage - 2 || page === currentPage + 2) ? 'hidden sm:flex' : 'flex'
           ]"
         >
           {{ page }}
@@ -77,13 +90,14 @@ const changePage = (page: number | string) => {
       </template>
     </div>
 
-    <!-- Next Button -->
-    <CaratButton 
-      direction="right" 
-      :disabled="currentPage === totalPages" 
-      @click="changePage(currentPage + 1)" 
-      class="scale-90 md:scale-100"
-    />
+    <div class="scale-90 md:scale-100">
+      <CaratButton
+        direction="right"
+        :disabled="currentPage === totalPages"
+        @click="changePage(currentPage + 1)"
+        class="bg-gray-0 hover:bg-gray-100/20"
+      />
+    </div>
   </div>
 </template>
 

@@ -19,12 +19,12 @@ const selectTab = (id: string | number) => {
 </script>
 
 <template>
-  <div class="flex gap-8 border-b border-gray-400/30 dark:border-gray-100/10">
+  <div class="flex gap-4 border-b border-gray-400/30 dark:border-gray-100/10">
     <button
       v-for="tab in (props.tabs as TabItem[])"
       :key="tab.id"
       @click="selectTab(tab.id)"
-      class="relative pb-3 transition-all duration-200 cursor-pointer outline-none group text-left"
+      class="relative pb-1 transition-all duration-200 cursor-pointer outline-none group text-left"
       :class="[
         modelValue === tab.id
           ? 'text-base dark:text-white font-bold'
