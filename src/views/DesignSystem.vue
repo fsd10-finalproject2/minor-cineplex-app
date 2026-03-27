@@ -1,7 +1,10 @@
 <script setup lang="ts">
-import { defineComponent, h } from 'vue'
+import { defineComponent, h, ref } from 'vue'
 import { useTheme } from '@/composables/useTheme'
 import CustomButton from '@/components/ui/CustomButton.vue'
+import TabGroup from '@/components/ui/TabGroup.vue'
+import MenuLink from '@/components/ui/MenuLink.vue'
+import Pagination from '@/components/ui/Pagination.vue'
 import {
   CalendarIcon,
   ChevronDownIcon,
@@ -65,6 +68,15 @@ const TypeRow = defineComponent({
       )
   },
 })
+
+const activeTab = ref('now')
+const movieTabs = [
+  { id: 'now', label: 'Now showing' },
+  { id: 'soon', label: 'Coming soon' },
+]
+
+const currentPage = ref(1)
+const totalPages = ref(20)
 </script>
 
 <template>
@@ -121,6 +133,76 @@ const TypeRow = defineComponent({
       </div>
     </section>
 
+    <!-- Navigation & Tabs -->
+    <section class="mb-16">
+      <SectionTitle>Navigation & Tabs</SectionTitle>
+      <div class="p-6 bg-gray-400/10 rounded-xl border border-gray-400 dark:border-gray-200">
+        <TabGroup v-model="activeTab" :tabs="movieTabs" />
+        
+        <div class="mt-8 p-12 flex items-center justify-center border-2 border-dashed border-gray-400/50 rounded-lg">
+          <p class="style-body-2-regular text-gray-200">
+            Current View: <span class="text-blue-100 font-bold uppercase tracking-wider ml-1">{{ activeTab }}</span>
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Menu Links -->
+    <section class="mb-16">
+      <SectionTitle>Menu Links & Sidebar</SectionTitle>
+      <div class="space-y-4">
+        <p class="style-label text-blue-100 mb-4">Sidebar Items / Navigation</p>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-4xl border border-gray-400 dark:border-gray-200 p-8 rounded-2xl bg-gray-400/5">
+          <!-- Inactive / Default -->
+          <div class="space-y-2">
+            <p class="style-help-text text-gray-200 mb-2">Inactive (Hover me)</p>
+            <MenuLink :icon="UserIcon" label="Booking history" />
+            <MenuLink :icon="TicketIcon" label="My tickets" />
+          </div>
+
+          <!-- Active State -->
+          <div class="space-y-2">
+            <p class="style-help-text text-gray-200 mb-2">Active State</p>
+            <MenuLink :icon="UserIcon" label="Booking history" active />
+            <MenuLink :icon="StarIcon" label="Rewards" />
+          </div>
+
+          <!-- Various Icons -->
+          <div class="space-y-2">
+            <p class="style-help-text text-gray-200 mb-2">Variety</p>
+            <MenuLink :icon="RefreshIcon" label="Update Info" />
+            <MenuLink :icon="SignOutIcon" label="Log out" />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Pagination -->
+    <section class="mb-16 text-left">
+      <SectionTitle>Pagination</SectionTitle>
+      <div class="space-y-8 p-10 bg-gray-400/5 rounded-2xl border border-gray-400 dark:border-gray-200">
+        <div>
+          <p class="style-label text-blue-100 mb-6">Interactive Preview</p>
+          <Pagination v-model:currentPage="currentPage" :totalPages="totalPages" />
+          
+          <div class="mt-6 p-4 inline-block bg-blue-100/10 rounded-lg border border-blue-100/20">
+            <p class="style-body-3 text-blue-100 font-medium">
+              You are currently on page: <strong>{{ currentPage }}</strong> of {{ totalPages }}
+            </p>
+          </div>
+        </div>
+
+        <div class="pt-8 border-t border-gray-400/30 dark:border-gray-100/10">
+          <p class="style-label text-gray-200 mb-4 opacity-70">Single Carat (from Figma)</p>
+          <div class="flex gap-4">
+             <button class="p-2 rounded-lg border border-gray-400/30 text-gray-200 hover:text-white cursor-pointer"><ChevronLeftIcon class="size-6"/></button>
+             <button class="p-2 rounded-lg border border-gray-400/30 text-gray-200 hover:text-white cursor-pointer"><ChevronRightIcon class="size-6"/></button>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- Form -->
     <section class="mb-16">
       <SectionTitle>Form Elements</SectionTitle>
@@ -148,8 +230,6 @@ const TypeRow = defineComponent({
           <CustomButton variant="secondary"> Secondary </CustomButton>
 
           <CustomButton variant="ghost"> Ghost </CustomButton>
-
-          <CustomB />
         </div>
       </div>
       <CalendarIcon class="size-20" />
