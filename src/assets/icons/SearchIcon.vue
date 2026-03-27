@@ -14,9 +14,9 @@ const props = withDefaults(
 <template>
   <svg :width="props.size" :height="props.size" viewBox="0 0 24 24" fill="none" v-bind="$attrs">
     <!-- circle -->
-    <circle cx="11" cy="11" r="6" :stroke="props.color" stroke-width="1.5" />
+    <circle cx="11" cy="11" r="6" :stroke="props.color" stroke-width="1" />
 
     <!-- handle -->
-    <path d="M20 20L17 17" :stroke="props.color" stroke-width="1.5" stroke-linecap="round" />
+    <path d="M20 20L17 17" :stroke="props.color" stroke-width="1" stroke-linecap="round" />
   </svg>
 </template>
