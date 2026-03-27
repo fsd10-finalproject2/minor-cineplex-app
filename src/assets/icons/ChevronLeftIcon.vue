@@ -5,18 +5,18 @@ const props = withDefaults(
     color?: string
   }>(),
   {
-    size: 16,
+    size: 24,
     color: 'currentColor',
   },
 )
 </script>
 
 <template>
-  <svg :width="props.size" :height="props.size" viewBox="0 0 8 13" fill="none">
+  <svg :width="props.size" :height="props.size" viewBox="0 0 24 24" fill="none" v-bind="$attrs">
     <path
-      d="M6.70703 0.353516L0.707031 6.35352L6.70703 12.3535"
+      d="M15 18L9 12L15 6"
       :stroke="props.color"
-      stroke-width="1.5"
+      stroke-width="2"
       stroke-linecap="round"
       stroke-linejoin="round"
     />
