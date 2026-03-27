@@ -34,6 +34,9 @@ import {
   CalendarRangeIcon,
 } from '@/assets/icons'
 
+import CustomTag from '@/components/ui/CustomTag.vue'
+import StepperBar from '@/components/ui/step-component/StepperBar.vue'
+
 const { toggleTheme } = useTheme()
 
 // ── Sub-components ─────────────────────────────────────────────────────
@@ -139,10 +142,15 @@ const totalPages = ref(20)
       <SectionTitle>Navigation & Tabs</SectionTitle>
       <div class="p-6 bg-gray-400/10 rounded-xl border border-gray-400 dark:border-gray-200">
         <TabGroup v-model="activeTab" :tabs="movieTabs" />
-        
-        <div class="mt-8 p-12 flex items-center justify-center border-2 border-dashed border-gray-400/50 rounded-lg">
+
+        <div
+          class="mt-8 p-12 flex items-center justify-center border-2 border-dashed border-gray-400/50 rounded-lg"
+        >
           <p class="style-body-2-regular text-gray-200">
-            Current View: <span class="text-blue-100 font-bold uppercase tracking-wider ml-1">{{ activeTab }}</span>
+            Current View:
+            <span class="text-blue-100 font-bold uppercase tracking-wider ml-1">{{
+              activeTab
+            }}</span>
           </p>
         </div>
       </div>
@@ -153,8 +161,10 @@ const totalPages = ref(20)
       <SectionTitle>Menu Links & Sidebar</SectionTitle>
       <div class="space-y-4">
         <p class="style-label text-blue-100 mb-4">Sidebar Items / Navigation</p>
-        
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-4xl border border-gray-400 dark:border-gray-200 p-8 rounded-2xl bg-gray-400/5">
+
+        <div
+          class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-4xl border border-gray-400 dark:border-gray-200 p-8 rounded-2xl bg-gray-400/5"
+        >
           <!-- Inactive / Default -->
           <div class="space-y-2">
             <p class="style-help-text text-gray-200 mb-2">Inactive (Hover me)</p>
@@ -182,11 +192,13 @@ const totalPages = ref(20)
     <!-- Pagination -->
     <section class="mb-16 text-left">
       <SectionTitle>Pagination</SectionTitle>
-      <div class="space-y-8 p-10 bg-gray-400/5 rounded-2xl border border-gray-400 dark:border-gray-200">
+      <div
+        class="space-y-8 p-10 bg-gray-400/5 rounded-2xl border border-gray-400 dark:border-gray-200"
+      >
         <div>
           <p class="style-label text-blue-100 mb-6">Interactive Preview</p>
           <CustomPagination v-model:currentPage="currentPage" :totalPages="totalPages" />
-          
+
           <div class="mt-8 p-4 bg-gray-100/10 rounded-xl border border-gray-100/20 max-w-sm">
             <p class="style-body-3 text-gray-100 font-medium">
               You are currently on page: <strong>{{ currentPage }}</strong> of {{ totalPages }}
@@ -197,8 +209,8 @@ const totalPages = ref(20)
         <div class="pt-8 border-t border-gray-400/30 dark:border-gray-100/10">
           <p class="style-label text-gray-200 mb-4 opacity-70">Single Carat (from Figma)</p>
           <div class="flex gap-4">
-             <CaratButton direction="left" class="bg-gray-0 rounded-lg p-2" />
-             <CaratButton direction="right" class="bg-gray-0 rounded-lg p-2" />
+            <CaratButton direction="left" class="bg-gray-0 rounded-lg p-2" />
+            <CaratButton direction="right" class="bg-gray-0 rounded-lg p-2" />
           </div>
         </div>
       </div>
@@ -232,32 +244,47 @@ const totalPages = ref(20)
 
           <CustomButton variant="ghost"> Ghost </CustomButton>
         </div>
+        <div class="flex gap-3">
+          <CustomTag>Genre</CustomTag>
+          <CustomTag variant="lang">TH/EN</CustomTag>
+        </div>
+        
+        <StepperBar
+          :steps="[
+            { label: 'Select showtime', status: 'completed' },
+            { label: 'Select seat', status: 'active' },
+            { label: 'Payment', status: 'inactive' },
+          ]"
+        />
       </div>
-      <CalendarIcon class="size-20" />
-      <ChevronDownIcon class="size-20 text-blue-200" />
-      <ChevronLeftIcon />
-      <ChevronRightIcon />
-      <ChevronUpIcon />
-      <ClockFillIcon />
-      <ClockLineIcon />
-      <CopyIcon />
-      <DoneIcon />
-      <EditIcon />
-      <HamburgerIcon />
-      <NewTabIcon />
-      <NoteBookIcon />
-      <PinIcon />
-      <PlusIcon />
-      <SearchIcon />
-      <ShopIcon />
-      <SignOutIcon />
-      <StarFillIcon />
-      <StarIcon />
-      <TicketIcon />
-      <UserIcon />
-      <XIcon />
-      <RefreshIcon />
-      <CalendarRangeIcon />
+
+      <div class="flex flex-row pt-10">
+        <CalendarIcon class="size-20" />
+        <ChevronDownIcon class="size-20 text-blue-200" />
+        <ChevronLeftIcon />
+        <ChevronRightIcon />
+        <ChevronUpIcon />
+        <ClockFillIcon />
+        <ClockLineIcon />
+        <CopyIcon />
+        <DoneIcon />
+        <EditIcon />
+        <HamburgerIcon />
+        <NewTabIcon />
+        <NoteBookIcon />
+        <PinIcon />
+        <PlusIcon />
+        <SearchIcon />
+        <ShopIcon />
+        <SignOutIcon />
+        <StarFillIcon />
+        <StarIcon />
+        <TicketIcon />
+        <UserIcon />
+        <XIcon />
+        <RefreshIcon />
+        <CalendarRangeIcon />
+      </div>
     </section>
   </div>
 </template>

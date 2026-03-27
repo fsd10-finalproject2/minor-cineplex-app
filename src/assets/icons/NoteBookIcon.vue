@@ -27,7 +27,7 @@ const props = withDefaults(
       height="17"
       rx="2"
       :stroke="props.color"
-      stroke-width="1.5"
+      stroke-width="1"
     />
 
     <!-- top small line -->
@@ -35,7 +35,7 @@ const props = withDefaults(
       d="M15 10V8"
       :stroke="props.color"
       stroke-linecap="round"
-      stroke-width="1.5"
+      stroke-width="1"
     />
 
     <!-- list lines -->
@@ -43,19 +43,19 @@ const props = withDefaults(
       d="M4 9H8"
       :stroke="props.color"
       stroke-linecap="round"
-      stroke-width="1.5"
+      stroke-width="1"
     />
     <path
       d="M4 13H8"
       :stroke="props.color"
       stroke-linecap="round"
-      stroke-width="1.5"
+      stroke-width="1"
     />
     <path
       d="M4 17H8"
       :stroke="props.color"
       stroke-linecap="round"
-      stroke-width="1.5"
+      stroke-width="1"
     />
   </svg>
 </template>

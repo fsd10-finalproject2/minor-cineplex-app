@@ -16,7 +16,7 @@ const props = withDefaults(
     <path
       d="M18 15L12 9L6 15"
       :stroke="props.color"
-      stroke-width="2"
+      stroke-width="1"
       stroke-linecap="round"
       stroke-linejoin="round"
     />
