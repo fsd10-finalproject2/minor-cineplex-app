@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { defineComponent, h, ref } from 'vue'
+import { defineComponent, h, ref } from '@vue/runtime-core'
 import { useTheme } from '@/composables/useTheme'
 import CustomButton from '@/components/ui/CustomButton.vue'
+import UIModal from '@/components/ui/Modal.vue'
 import TabGroup from '@/components/ui/TabGroup.vue'
 import MenuLink from '@/components/ui/MenuLink.vue'
 import CustomPagination from '@/components/ui/CustomPagination.vue'
@@ -38,6 +39,7 @@ import {
 import CustomTag from '@/components/ui/CustomTag.vue'
 import StepperBar from '@/components/ui/step-component/StepperBar.vue'
 import AppLoader from '@/components/ui/AppLoader.vue'
+import type { ModalAction } from '@/components/ui/Modal.vue'
 
 const { toggleTheme } = useTheme()
 
@@ -100,14 +102,37 @@ function mockFetch() {
     isFetching.value = false
   }, 2000)
 }
+
+const isModalOpen = ref(false);
+const toggleModal = () => {
+  isModalOpen.value = !isModalOpen.value;
+}
+
+const modalActions: ModalAction[] = [
+  {
+    id: 'cancel',
+    label: 'Cancel',
+    variant: 'secondary',
+    size: 'md',
+    closeOnClick: true,
+
+  },
+  {
+    id: 'confirm',
+    label: 'Confirm',
+    variant: 'primary',
+    size: 'md',
+    closeOnClick: true, handler: () => {
+      window.open('https://www.google.com', '_blank')
+    },
+  },
+]
 </script>
 
 <template>
   <div class="min-h-screen p-10 bg-base text-base transition-colors duration-300">
     <!-- Header -->
-    <header
-      class="mb-16 pb-8 flex items-start justify-between border-b border-gray-400 dark:border-gray-200"
-    >
+    <header class="mb-16 pb-8 flex items-start justify-between border-b border-gray-400 dark:border-gray-200">
       <div>
         <p class="style-label text-blue-100 uppercase tracking-widest mb-2">Design System</p>
 
@@ -116,16 +141,13 @@ function mockFetch() {
         <p class="style-body-1-regular mt-3 max-w-xl text-gray-200 dark:text-gray-300">
           A visual reference for all typography styles, color tokens, and utility classes defined in
           <code class="text-blue-100 px-1.5 py-0.5 rounded text-sm bg-gray-400/30 dark:bg-gray-100">
-            main.css </code
-          >.
+            main.css </code>.
         </p>
       </div>
 
       <!-- Theme Toggle -->
-      <button
-        @click="toggleTheme"
-        class="flex items-center gap-2 px-4 py-2 rounded-full border style-body-2-medium transition-all cursor-pointer border-gray-400 text-gray-200 hover:border-blue-100 hover:text-base dark:border-gray-200 dark:text-gray-300 dark:hover:text-white"
-      >
+      <button @click="toggleTheme"
+        class="flex items-center gap-2 px-4 py-2 rounded-full border style-body-2-medium transition-all cursor-pointer border-gray-400 text-gray-200 hover:border-blue-100 hover:text-base dark:border-gray-200 dark:text-gray-300 dark:hover:text-white">
         <span>🌗</span>
         <span>Toggle Theme</span>
       </button>
@@ -264,11 +286,8 @@ function mockFetch() {
             Email address
           </label>
 
-          <input
-            type="email"
-            placeholder="user@example.com"
-            class="style-input w-full border rounded-lg px-4 py-3 outline-none transition-all bg-gray-400/20 text-base border-gray-400 dark:bg-gray-100 dark:text-white dark:border-gray-200"
-          />
+          <input type="email" placeholder="user@example.com"
+            class="style-input w-full border rounded-lg px-4 py-3 outline-none transition-all bg-gray-400/20 text-base border-gray-400 dark:bg-gray-100 dark:text-white dark:border-gray-200" />
 
           <p class="style-help-text mt-1.5 text-gray-200 dark:text-gray-300">
             We'll never share your email.
@@ -334,5 +353,12 @@ function mockFetch() {
         <CalendarRangeIcon />
       </div>
     </section>
+
+    <CustomButton @click="toggleModal"> 🧊 Modal Open </CustomButton>
+
+    <UIModal v-model="isModalOpen" title="Modal Title"
+      content="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum id ante vitae eros suscipit pulvinar."
+      size="md" :actions="modalActions" :close-on-backdrop="true" :close-on-esc="true" :persistent="false" />
+
   </div>
 </template>
