@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import DesignSystem from './views/DesignSystem.vue'
+
 </script>
 
 <template>
-  <DesignSystem />
+
+  <router-view />
 </template>
 
 <style scoped></style>

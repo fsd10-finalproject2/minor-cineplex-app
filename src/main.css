@@ -185,6 +185,15 @@ input:-webkit-autofill:active {
   font-family: var(--default-font-family);
 }
 
+body {
+  margin: 0;
+  padding: 0;
+}
+
+button {
+  cursor: pointer;
+}
+
 :root {
   --bg: var(--color-white);
   --text: var(--color-black);
