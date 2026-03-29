@@ -6,6 +6,7 @@ import TabGroup from '@/components/ui/TabGroup.vue'
 import MenuLink from '@/components/ui/MenuLink.vue'
 import CustomPagination from '@/components/ui/CustomPagination.vue'
 import CaratButton from '@/components/ui/CaratButton.vue'
+import SidebarMenu from '@/components/ui/SidebarMenu.vue'
 import {
   CalendarIcon,
   ChevronDownIcon,
@@ -81,6 +82,14 @@ const movieTabs = [
 
 const currentPage = ref(1)
 const totalPages = ref(20)
+
+const sidebarItems = [
+  { id: 'booking', label: 'Booking history', icon: NoteBookIcon },
+  { id: 'coupons', label: 'My coupons', icon: TicketIcon },
+  { id: 'profile', label: 'Profile', icon: UserIcon },
+  { id: 'reset', label: 'Reset password', icon: RefreshIcon },
+]
+const selectedMenuId = ref('booking')
 </script>
 
 <template>
@@ -159,31 +168,50 @@ const totalPages = ref(20)
     <!-- Menu Links -->
     <section class="mb-16">
       <SectionTitle>Menu Links & Sidebar</SectionTitle>
-      <div class="space-y-4">
-        <p class="style-label text-blue-100 mb-4">Sidebar Items / Navigation</p>
-
-        <div
-          class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-4xl border border-gray-400 dark:border-gray-200 p-8 rounded-2xl bg-gray-400/5"
-        >
-          <!-- Inactive / Default -->
-          <div class="space-y-2">
-            <p class="style-help-text text-gray-200 mb-2">Inactive (Hover me)</p>
-            <MenuLink :icon="UserIcon" label="Booking history" />
-            <MenuLink :icon="TicketIcon" label="My tickets" />
+      <div class="space-y-8">
+        <div>
+          <p class="style-label text-blue-100 mb-6 uppercase">Sidebar Integrated Component</p>
+          <div class="flex gap-12 items-start">
+            <SidebarMenu 
+              :items="sidebarItems" 
+              :active-id="selectedMenuId" 
+              @select="id => selectedMenuId = id"
+            />
+            
+            <div class="flex-1 p-10 bg-gray-0 rounded-lg border border-gray-400/10 min-h-[290px] flex items-center justify-center">
+              <div class="text-center">
+                <p class="style-headline-3 text-base">Content Area</p>
+                <p class="style-body-2-regular text-gray-200 mt-1">Viewing: <span class="text-blue-100">{{ selectedMenuId }}</span></p>
+              </div>
+            </div>
           </div>
+        </div>
 
-          <!-- Active State -->
-          <div class="space-y-2">
-            <p class="style-help-text text-gray-200 mb-2">Active State</p>
-            <MenuLink :icon="UserIcon" label="Booking history" active />
-            <MenuLink :icon="StarIcon" label="Rewards" />
-          </div>
+        <div class="pt-8 border-t border-gray-100/10">
+          <p class="style-label text-blue-100 mb-6 uppercase tracking-wider">Individual Menu Items</p>
+          <div
+            class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-4xl border border-gray-400 dark:border-gray-200 p-8 rounded-2xl bg-gray-400/5"
+          >
+            <!-- Inactive / Default -->
+            <div class="space-y-2">
+              <p class="style-help-text text-gray-200 mb-2">Inactive (Hover me)</p>
+              <MenuLink :icon="UserIcon" label="Booking history" />
+              <MenuLink :icon="TicketIcon" label="My tickets" />
+            </div>
 
-          <!-- Various Icons -->
-          <div class="space-y-2">
-            <p class="style-help-text text-gray-200 mb-2">Variety</p>
-            <MenuLink :icon="RefreshIcon" label="Update Info" />
-            <MenuLink :icon="SignOutIcon" label="Log out" />
+            <!-- Active State -->
+            <div class="space-y-2">
+              <p class="style-help-text text-gray-200 mb-2">Active State</p>
+              <MenuLink :icon="UserIcon" label="Booking history" active />
+              <MenuLink :icon="StarIcon" label="Rewards" />
+            </div>
+
+            <!-- Various Icons -->
+            <div class="space-y-2">
+              <p class="style-help-text text-gray-200 mb-2">Variety</p>
+              <MenuLink :icon="RefreshIcon" label="Update Info" />
+              <MenuLink :icon="SignOutIcon" label="Log out" />
+            </div>
           </div>
         </div>
       </div>

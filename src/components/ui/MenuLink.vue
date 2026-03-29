@@ -5,6 +5,7 @@ const props = defineProps<{
   label: string
   active?: boolean
   icon?: Component
+  to?: string | object
 }>()
 
 const activeClass = computed(() =>
@@ -15,8 +16,10 @@ const activeClass = computed(() =>
 </script>
 
 <template>
-  <div
-    class="flex items-center gap-4 px-5 py-4 rounded-lg transition-all duration-200 cursor-pointer group select-none"
+  <component
+    :is="to ? 'router-link' : 'div'"
+    v-bind="to ? { to } : {}"
+    class="flex items-center gap-4 px-5 py-4 rounded-lg transition-all duration-200 cursor-pointer group select-none no-underline"
     :class="activeClass"
   >
     <!-- Icon Container -->
@@ -33,7 +36,7 @@ const activeClass = computed(() =>
     <span class="style-body-1-medium whitespace-nowrap">
       {{ label }}
     </span>
-  </div>
+  </component>
 </template>
 
 <style scoped>
