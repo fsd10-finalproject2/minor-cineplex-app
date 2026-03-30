@@ -1,18 +1,12 @@
 <script setup lang="ts">
-import { type Component } from 'vue'
+import { computed } from 'vue'
+import { useRoute } from 'vue-router'
 import MenuLink from '@/components/ui/MenuLink.vue'
+import { menuItems } from '@/config/menuItems'
+import type { Page } from '@/types/navbarMenu'
 
-interface MenuItem {
-  id: string
-  label: string
-  icon: Component
-  to?: string
-}
-
-defineProps<{
-  items: MenuItem[]
-  activeId?: string
-}>()
+const route = useRoute()
+const activeId = computed(() => route.name as Page)
 
 defineEmits<{
   (e: 'select', id: string): void
@@ -20,44 +14,39 @@ defineEmits<{
 </script>
 
 <template>
-  <aside 
-    class="sidebar-container w-full md:w-[285px] h-fit flex flex-row md:flex-col gap-2 rounded-lg overflow-x-auto md:overflow-visible no-scrollbar"
+  <aside
+    class="sidebar-container w-full md:min-w-64.25 md:w-64.25 h-fit flex flex-row md:flex-col gap-2 rounded-lg"
   >
     <MenuLink
-      v-for="item in items"
+      v-for="item in menuItems"
       :key="item.id"
       class="shrink-0"
       :label="item.label"
       :icon="item.icon"
       :to="item.to"
       :active="activeId === item.id"
-      @click="$emit('select', item.id)"
     />
   </aside>
 </template>
 
 <style scoped>
 .sidebar-container {
-  background-color: #070C1B;
-  padding: 16px;
-  /* Figma shadow: X:4, Y:4, Blur:30, Spread:0, 50% Black */
+  background-color: #070c1b;
+  padding: 16px 16px 24px 16px;
   box-shadow: 4px 4px 30px rgba(0, 0, 0, 0.5);
+  overflow-x: auto;
+  overflow-y: visible;
+  scrollbar-width: none;
 }
 
-@media (max-width: 768px) {
-  .sidebar-container {
-    padding: 8px; /* Match the tighter mobile screenshot */
-  }
-}
-
-/* Hide scrollbar for Chrome, Safari and Opera */
-.no-scrollbar::-webkit-scrollbar {
+.sidebar-container::-webkit-scrollbar {
   display: none;
 }
 
-/* Hide scrollbar for IE, Edge and Firefox */
-.no-scrollbar {
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
+@media (max-width: 765px) {
+  .sidebar-container {
+    padding: 8px 16px;
+    max-width: 100vw;
+  }
 }
 </style>
