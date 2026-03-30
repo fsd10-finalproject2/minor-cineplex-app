@@ -50,11 +50,11 @@
   const positionClass = (pos: string) => {
     switch (pos) {
       case "top-left":
-        return "top-5 left-5";
+        return "top-5 left-0 sm:left-5";
       case "top-center":
         return "top-5 left-1/2 -translate-x-1/2 items-center";
       case "top-right":
-        return "top-5 right-5";
+        return "top-5 right-0 sm:right-5";
   
       case "bottom-left":
         return "bottom-5 left-5";

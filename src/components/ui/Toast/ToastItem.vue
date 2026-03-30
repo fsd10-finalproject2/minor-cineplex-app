@@ -15,9 +15,11 @@ defineEmits(["close"]);
 
 const variantClass = computed(() => {
     const variantStatus = {
-        success: "bg-[#E5364B] opacity-90 text-white",
-        error: "bg-[#E5364B] opacity-90 text-white",
+        success: "bg-green-50 opacity-90 text-white",
+        error: "bg-red-50 opacity-90 text-white",
     } as const
+    console.log(variantStatus[props.toast.variant ?? "success"]);
+    console.log(props.toast.variant);
     return variantStatus[props.toast.variant ?? "success"]
 });
 
@@ -25,7 +27,7 @@ const variantClass = computed(() => {
 
 <template>
     <div :class="[
-        'p-4 px-5 rounded-sm shadow-lg text-white flex flex-col gap-1 w-[480px] h-[100px] shrink-0',
+        'p-4 px-5 rounded-sm shadow-lg text-white flex flex-col gap-1 w-[350px] sm:w-[480px] sm:h-[100px] shrink-0',
         variantClass
     ]">
         <div class="flex justify-between items-center">

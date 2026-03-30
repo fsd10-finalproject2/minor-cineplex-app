@@ -40,8 +40,7 @@ import CustomTag from '@/components/ui/CustomTag.vue'
 import StepperBar from '@/components/ui/step-component/StepperBar.vue'
 import AppLoader from '@/components/ui/AppLoader.vue'
 import type { ModalAction } from '@/components/ui/Modal.vue'
-import ToastContainer from '@/components/ui/ToastContainer.vue'
-import type { ToastVariant } from '@/composables/useToast'
+import ToastContainer from '@/components/ui/Toast/ToastContainer.vue'
 import { useToast, type ToastPosition } from '@/composables/useToast'
 
 const { toggleTheme } = useTheme()
@@ -135,7 +134,7 @@ const showToast = (position: ToastPosition) => {
     title: "Attention needed",
     description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum id ante vitae eros suscipit pulvinar. : ${position}`,
     position,
-    variant: "success" as ToastVariant,
+    variant: "success",
     duration: 3000,
   });
 };
@@ -165,7 +164,8 @@ const showToast = (position: ToastPosition) => {
       </button>
     </header>
 
-    <!-- Typography -->
+
+    <!--  Typography -->
     <section class="mb-16">
       <SectionTitle>Typography</SectionTitle>
       <div class="space-y-2">
@@ -355,9 +355,11 @@ const showToast = (position: ToastPosition) => {
         <RefreshIcon />
         <CalendarRangeIcon />
       </div>
-    </section>
+    </section> 
+    
 
 
+ 
 
     <section class="mb-16">
       <SectionTitle>Feedback</SectionTitle>
