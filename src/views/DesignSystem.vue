@@ -37,6 +37,7 @@ import {
 
 import CustomTag from '@/components/ui/CustomTag.vue'
 import StepperBar from '@/components/ui/step-component/StepperBar.vue'
+import AppLoader from '@/components/ui/AppLoader.vue'
 
 const { toggleTheme } = useTheme()
 
@@ -90,6 +91,15 @@ const sidebarItems = [
   { id: 'reset', label: 'Reset password', icon: RefreshIcon },
 ]
 const selectedMenuId = ref('booking')
+
+const isFetching = ref(false)
+
+function mockFetch() {
+  isFetching.value = true
+  setTimeout(() => {
+    isFetching.value = false
+  }, 2000)
+}
 </script>
 
 <template>
@@ -266,7 +276,7 @@ const selectedMenuId = ref('booking')
         </div>
 
         <div class="flex gap-3">
-          <CustomButton disabled> 💾 Save </CustomButton>
+          <CustomButton> 💾 Save </CustomButton>
 
           <CustomButton variant="secondary"> Secondary </CustomButton>
 
@@ -276,7 +286,7 @@ const selectedMenuId = ref('booking')
           <CustomTag>Genre</CustomTag>
           <CustomTag variant="lang">TH/EN</CustomTag>
         </div>
-        
+
         <StepperBar
           :steps="[
             { label: 'Select showtime', status: 'completed' },
@@ -285,6 +295,16 @@ const selectedMenuId = ref('booking')
           ]"
         />
       </div>
+
+      <section class="mb-16">
+        <SectionTitle>Loader</SectionTitle>
+        <div class="p-6 bg-gray-400/10 rounded-xl border border-gray-400 dark:border-gray-200">
+          <p class="style-label text-blue-100 mb-4">Fetch Loader</p>
+          <CustomButton @click="mockFetch">Simulate Fetch</CustomButton>
+        </div>
+      </section>
+
+      <AppLoader :loading="isFetching" />
 
       <div class="flex flex-row pt-10">
         <CalendarIcon class="size-20" />

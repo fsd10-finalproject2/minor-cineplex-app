@@ -15,7 +15,7 @@ const props = withDefaults(
   },
 )
 
-const baseClass = 'py-2 px-7 rounded-md style-button transition-colors duration-200'
+const baseClass = 'py-2 px-7 rounded-md style-button transition-colors duration-200 cursor-pointer'
 
 const variantMap = {
   primary: `
