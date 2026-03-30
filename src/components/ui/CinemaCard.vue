@@ -21,9 +21,9 @@ defineProps<{
         {{ name }}
       </h3>
 
-      <div class="flex items-center gap-2 style-body-1-regular text-gray-400 truncate">
+      <div class="flex items-center gap-2 style-body-2-regular text-gray-400 truncate">
         <template v-if="distance">
-          <span class="text-white font-medium">{{ distance }}</span>
+          <span class="text-white">{{ distance }}</span>
           <div class="w-0.5 h-4 bg-gray-300"></div>
         </template>
         <p class="truncate opacity-70">{{ address }}</p>
