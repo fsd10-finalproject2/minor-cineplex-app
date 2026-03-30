@@ -40,6 +40,9 @@ import CustomTag from '@/components/ui/CustomTag.vue'
 import StepperBar from '@/components/ui/step-component/StepperBar.vue'
 import AppLoader from '@/components/ui/AppLoader.vue'
 import type { ModalAction } from '@/components/ui/Modal.vue'
+import ToastContainer from '@/components/ui/ToastContainer.vue'
+import type { ToastVariant } from '@/composables/useToast'
+import { useToast, type ToastPosition } from '@/composables/useToast'
 
 const { toggleTheme } = useTheme()
 
@@ -107,7 +110,6 @@ const isModalOpen = ref(false);
 const toggleModal = () => {
   isModalOpen.value = !isModalOpen.value;
 }
-
 const modalActions: ModalAction[] = [
   {
     id: 'cancel',
@@ -115,18 +117,28 @@ const modalActions: ModalAction[] = [
     variant: 'secondary',
     size: 'md',
     closeOnClick: true,
-
   },
   {
     id: 'confirm',
     label: 'Confirm',
     variant: 'primary',
     size: 'md',
-    closeOnClick: true, handler: () => {
+    closeOnClick: true, 
+    handler: () => {
       window.open('https://www.google.com', '_blank')
     },
   },
 ]
+const { addToast } = useToast();
+const showToast = (position: ToastPosition) => {
+  addToast({
+    title: "Attention needed",
+    description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum id ante vitae eros suscipit pulvinar. : ${position}`,
+    position,
+    variant: "success" as ToastVariant,
+    duration: 3000,
+  });
+};
 </script>
 
 <template>
@@ -184,14 +196,12 @@ const modalActions: ModalAction[] = [
       <div class="p-6 bg-gray-400/10 rounded-xl border border-gray-400 dark:border-gray-200">
         <TabGroup v-model="activeTab" :tabs="movieTabs" />
 
-        <div
-          class="mt-8 p-12 flex items-center justify-center border-2 border-dashed border-gray-400/50 rounded-lg"
-        >
+        <div class="mt-8 p-12 flex items-center justify-center border-2 border-dashed border-gray-400/50 rounded-lg">
           <p class="style-body-2-regular text-gray-200">
             Current View:
             <span class="text-blue-100 font-bold uppercase tracking-wider ml-1">{{
               activeTab
-            }}</span>
+              }}</span>
           </p>
         </div>
       </div>
@@ -204,16 +214,14 @@ const modalActions: ModalAction[] = [
         <div>
           <p class="style-label text-blue-100 mb-6 uppercase">Sidebar Integrated Component</p>
           <div class="flex gap-12 items-start">
-            <SidebarMenu 
-              :items="sidebarItems" 
-              :active-id="selectedMenuId" 
-              @select="id => selectedMenuId = id"
-            />
-            
-            <div class="flex-1 p-10 bg-gray-0 rounded-lg border border-gray-400/10 min-h-[290px] flex items-center justify-center">
+            <SidebarMenu :items="sidebarItems" :active-id="selectedMenuId" @select="id => selectedMenuId = id" />
+
+            <div
+              class="flex-1 p-10 bg-gray-0 rounded-lg border border-gray-400/10 min-h-[290px] flex items-center justify-center">
               <div class="text-center">
                 <p class="style-headline-3 text-base">Content Area</p>
-                <p class="style-body-2-regular text-gray-200 mt-1">Viewing: <span class="text-blue-100">{{ selectedMenuId }}</span></p>
+                <p class="style-body-2-regular text-gray-200 mt-1">Viewing: <span class="text-blue-100">{{
+                  selectedMenuId }}</span></p>
               </div>
             </div>
           </div>
@@ -222,8 +230,7 @@ const modalActions: ModalAction[] = [
         <div class="pt-8 border-t border-gray-100/10">
           <p class="style-label text-blue-100 mb-6 uppercase tracking-wider">Individual Menu Items</p>
           <div
-            class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-4xl border border-gray-400 dark:border-gray-200 p-8 rounded-2xl bg-gray-400/5"
-          >
+            class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-4xl border border-gray-400 dark:border-gray-200 p-8 rounded-2xl bg-gray-400/5">
             <!-- Inactive / Default -->
             <div class="space-y-2">
               <p class="style-help-text text-gray-200 mb-2">Inactive (Hover me)</p>
@@ -252,9 +259,7 @@ const modalActions: ModalAction[] = [
     <!-- Pagination -->
     <section class="mb-16 text-left">
       <SectionTitle>Pagination</SectionTitle>
-      <div
-        class="space-y-8 p-10 bg-gray-400/5 rounded-2xl border border-gray-400 dark:border-gray-200"
-      >
+      <div class="space-y-8 p-10 bg-gray-400/5 rounded-2xl border border-gray-400 dark:border-gray-200">
         <div>
           <p class="style-label text-blue-100 mb-6">Interactive Preview</p>
           <CustomPagination v-model:currentPage="currentPage" :totalPages="totalPages" />
@@ -306,13 +311,11 @@ const modalActions: ModalAction[] = [
           <CustomTag variant="lang">TH/EN</CustomTag>
         </div>
 
-        <StepperBar
-          :steps="[
-            { label: 'Select showtime', status: 'completed' },
-            { label: 'Select seat', status: 'active' },
-            { label: 'Payment', status: 'inactive' },
-          ]"
-        />
+        <StepperBar :steps="[
+          { label: 'Select showtime', status: 'completed' },
+          { label: 'Select seat', status: 'active' },
+          { label: 'Payment', status: 'inactive' },
+        ]" />
       </div>
 
       <section class="mb-16">
@@ -354,11 +357,29 @@ const modalActions: ModalAction[] = [
       </div>
     </section>
 
-    <CustomButton @click="toggleModal"> 🧊 Modal Open </CustomButton>
 
-    <UIModal v-model="isModalOpen" title="Modal Title"
-      content="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum id ante vitae eros suscipit pulvinar."
-      size="md" :actions="modalActions" :close-on-backdrop="true" :close-on-esc="true" :persistent="false" />
+
+    <section class="mb-16">
+      <SectionTitle>Feedback</SectionTitle>
+      <p class="style-label text-blue-100 mb-4">Modal</p>
+      <CustomButton @click="toggleModal" class="w-[200px]"> 🧊 Modal Open </CustomButton>
+      <UIModal v-model="isModalOpen" title="Modal Title"
+        content="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum id ante vitae eros suscipit pulvinar."
+        size="md" :actions="modalActions" :close-on-backdrop="true" :close-on-esc="true" :persistent="false" />
+
+      <p class="style-label text-blue-100 my-4">Toast</p>
+      <ToastContainer />
+      <div class=" flex gap-4 flex-wrap">
+        <CustomButton @click="showToast('top-left')">Top Left</CustomButton>
+        <CustomButton @click="showToast('top-center')">Top Center</CustomButton>
+        <CustomButton @click="showToast('top-right')">Top Right</CustomButton>
+        <CustomButton @click="showToast('bottom-left')">Bottom Left</CustomButton>
+        <CustomButton @click="showToast('bottom-center')">Bottom Center</CustomButton>
+        <CustomButton @click="showToast('bottom-right')">Bottom Right</CustomButton>
+        <CustomButton @click="showToast('center')">Center</CustomButton>
+      </div>
+
+    </section>
 
   </div>
 </template>

@@ -165,11 +165,11 @@ defineExpose({ close })
 <template>
     <Teleport to="body">
         <div v-if="modelValue"
-            class="fixed inset-0 z-50 flex items-center justify-center px-4 overflow-hidden shadow-[4px_4px_30px_0px_rgba(0,0,0,0.5)]">
+            class="fixed inset-0 z-500 flex items-center justify-center px-4 overflow-hidden shadow-[4px_4px_30px_0px_rgba(0,0,0,0.5)]">
             <div class="absolute inset-0 backdrop-blur-xs" aria-hidden="true" @click="onBackdropClick" />
 
             <section role="dialog" aria-modal="true" :aria-labelledby="title ? titleId : undefined"
-                class="relative z-10 flex flex-col gap-4 w-full p-6 overflow-hidden rounded-2xl border
+                class="relative z-100 flex flex-col gap-4 w-full p-6 overflow-hidden rounded-2xl border
                 border-gray-200 bg-gray-800 text-white shadow-2xl"
                 :class="sizeClass">
                 <header v-if="hasHeaderSlot || title || showCloseButton"
@@ -182,7 +182,7 @@ defineExpose({ close })
                         <span v-else class="min-w-0 flex-1" />
 
                         <button v-if="showCloseButton" type="button"
-                            class="absolute right-0  inline-flex shrink-0 items-center justify-center rounded-full text-gray-100 dark:text-gray-400 transition-colors hover:bg-gray-300/20 hover:dark:bg-white/10 hover:dark:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-100"
+                            class="absolute right-0  inline-flex shrink-0 items-center justify-center rounded-full text-gray-100 dark:text-gray-400 transition-colors hover:bg-gray-300/20 hover:dark:bg-white/10 hover:dark:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-100 p-1.5"
                             aria-label="Close dialog" @click="close">
                             <span aria-hidden="true" class="inline-flex text-current">
                                 <XIcon class="size-5"/>
