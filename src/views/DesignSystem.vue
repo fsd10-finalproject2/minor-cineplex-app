@@ -8,6 +8,8 @@ import MenuLink from '@/components/ui/MenuLink.vue'
 import CustomPagination from '@/components/ui/CustomPagination.vue'
 import CaratButton from '@/components/ui/CaratButton.vue'
 import SidebarMenu from '@/components/ui/SidebarMenu.vue'
+import SeatIcon from '@/components/ui/SeatIcon.vue'
+import CinemaCard from '@/components/ui/CinemaCard.vue'
 import {
   CalendarIcon,
   ChevronDownIcon,
@@ -214,10 +216,13 @@ const showToast = (position: ToastPosition) => {
         <div>
           <p class="style-label text-blue-100 mb-6 uppercase">Sidebar Integrated Component</p>
           <div class="flex gap-12 items-start">
-            <SidebarMenu :items="sidebarItems" :active-id="selectedMenuId" @select="id => selectedMenuId = id" />
+            <SidebarMenu
+              :items="sidebarItems"
+              :active-id="selectedMenuId"
+              @select="id => selectedMenuId = id"
+            />
 
-            <div
-              class="flex-1 p-10 bg-gray-0 rounded-lg border border-gray-400/10 min-h-[290px] flex items-center justify-center">
+            <div class="flex-1 p-10 bg-gray-0 rounded-lg border border-gray-400/10 min-h-[290px] flex items-center justify-center">
               <div class="text-center">
                 <p class="style-headline-3 text-base">Content Area</p>
                 <p class="style-body-2-regular text-gray-200 mt-1">Viewing: <span class="text-blue-100">{{
@@ -282,6 +287,37 @@ const showToast = (position: ToastPosition) => {
     </section>
 
     <!-- Form -->
+    <!-- Cinema Cards -->
+    <section class="mb-16">
+      <SectionTitle>Cinema Cards</SectionTitle>
+
+      <div class="p-10 bg-gray-400/5 rounded-2xl border border-gray-400 dark:border-gray-200">
+        <p class="style-label text-blue-100 mb-8 uppercase tracking-widest">Branch Selection (590px Width)</p>
+
+        <div class="space-y-6">
+          <!-- Standard -->
+          <div>
+            <p class="style-help-text text-gray-200 mb-3 ml-2 italic">Standard (No Distance)</p>
+            <CinemaCard
+              name="Eden Cinema"
+              address="1224 Arkham bridge, Arkham city"
+            />
+          </div>
+
+          <!-- With Distance -->
+          <div>
+            <p class="style-help-text text-gray-200 mb-3 ml-2 italic">With Distance Display</p>
+            <CinemaCard
+              name="Minor City"
+              address="999 Wayne street, Gotham city"
+              distance="3.34 km"
+            />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Form Elements -->
     <section class="mb-16">
       <SectionTitle>Form Elements</SectionTitle>
 
@@ -303,9 +339,9 @@ const showToast = (position: ToastPosition) => {
           <CustomButton> 💾 Save </CustomButton>
 
           <CustomButton variant="secondary"> Secondary </CustomButton>
-
           <CustomButton variant="ghost"> Ghost </CustomButton>
         </div>
+
         <div class="flex gap-3">
           <CustomTag>Genre</CustomTag>
           <CustomTag variant="lang">TH/EN</CustomTag>
