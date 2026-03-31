@@ -1,14 +1,15 @@
 <script setup lang="ts">
-import { defineComponent, h, ref } from 'vue'
+import { defineComponent, h, ref, markRaw } from 'vue'
 import { useTheme } from '@/composables/useTheme'
 import CustomButton from '@/components/ui/CustomButton.vue'
-import UIModal from '@/components/ui/Modal.vue'
+import UIModal, { type ModalAction } from '@/components/ui/modal/Modal.vue'
+import UIModalContainer, { type ModalActionContainer, type ModalActionHeader } from '@/components/ui/modal/ModalContainer.vue'
 import TabGroup from '@/components/ui/TabGroup.vue'
 import MenuLink from '@/components/ui/MenuLink.vue'
 import CustomPagination from '@/components/ui/CustomPagination.vue'
 import CaratButton from '@/components/ui/CaratButton.vue'
 import SidebarMenu from '@/components/ui/SidebarMenu.vue'
-import SeatIcon from '@/components/ui/SeatIcon.vue'
+// import SeatIcon from '@/components/ui/SeatIcon/SeatIcon.vue'
 import CinemaCard from '@/components/ui/CinemaCard.vue'
 import {
   CalendarIcon,
@@ -41,10 +42,10 @@ import {
 import CustomTag from '@/components/ui/CustomTag.vue'
 import StepperBar from '@/components/ui/step-component/StepperBar.vue'
 import AppLoader from '@/components/ui/AppLoader.vue'
-import type { ModalAction } from '@/components/ui/Modal.vue'
-import ToastContainer from '@/components/ui/Toast/ToastContainer.vue'
+import ToastContainer from '@/components/ui/toast/ToastContainer.vue'
 import { useToast, type ToastPosition } from '@/composables/useToast'
-
+import CouponMockup from '@/components/ui/modal/mockup/CouponMockup.vue'
+import BookingMockup from '@/components/ui/modal/mockup/BookingMockup.vue'
 const { toggleTheme } = useTheme()
 
 // ── Sub-components ─────────────────────────────────────────────────────
@@ -107,7 +108,15 @@ function mockFetch() {
   }, 2000)
 }
 
-const isModalOpen = ref(false)
+const isModalOpen = ref(false);
+const isModalContainerOpenCoupons = ref(false);
+const isModalContainerOpenBooking = ref(false);
+const toggleModalContainerCoupons = () => {
+  isModalContainerOpenCoupons.value = !isModalContainerOpenCoupons.value;
+}
+const toggleModalContainerBooking = () => {
+  isModalContainerOpenBooking.value = !isModalContainerOpenBooking.value;
+}
 const toggleModal = () => {
   isModalOpen.value = !isModalOpen.value
 }
@@ -130,7 +139,37 @@ const modalActions: ModalAction[] = [
     },
   },
 ]
-const { addToast } = useToast()
+const modalActionsContainer: ModalActionContainer[] = [
+  {
+    id: 'back',
+    label: 'Back',
+    variant: 'secondary',
+    styleButton: 'w-[117px] h-[48px]',
+    closeOnClick: true,
+  },
+  {
+    id: 'apply',
+    label: 'Apply',
+    variant: 'primary',
+    styleButton: 'w-[117px] h-[48px]',
+    closeOnClick: true,
+    handler: () => {
+      toggleModalContainerBooking();
+    },
+  },
+]
+
+const modalActionsHeaderBooking: ModalActionHeader[] = [
+  {
+    id: 'back',
+    icon: markRaw(NewTabIcon),
+    closeOnClick: true,
+    handler: () => {
+      window.open('https://youtu.be/i2Z4JaFnMjU?si=jLiZguLKYJdMsspq', '_blank')
+    }
+  },
+]
+const { addToast } = useToast();
 const showToast = (position: ToastPosition) => {
   addToast({
     title: 'Attention needed',
@@ -316,11 +355,7 @@ const showToast = (position: ToastPosition) => {
           <!-- With Distance -->
           <div>
             <p class="style-help-text text-gray-200 mb-3 ml-2 italic">With Distance Display</p>
-            <CinemaCard
-              name="Minor City"
-              address="999 Wayne street, Gotham city"
-              distance="3.34 km"
-            />
+            <CinemaCard name="Minor City" address="999 Wayne street, Gotham city" distance="3.34 km" />
           </div>
         </div>
       </div>
@@ -407,6 +442,10 @@ const showToast = (position: ToastPosition) => {
       </div>
     </section>
 
+
+
+
+
     <section class="mb-16">
       <SectionTitle>Feedback</SectionTitle>
       <p class="style-label text-blue-100 mb-4">Modal</p>
@@ -432,6 +471,23 @@ const showToast = (position: ToastPosition) => {
         <CustomButton @click="showToast('bottom-center')">Bottom Center</CustomButton>
         <CustomButton @click="showToast('bottom-right')">Bottom Right</CustomButton>
         <CustomButton @click="showToast('center')">Center</CustomButton>
+      </div>
+      <p class="style-label text-blue-100 mb-4 my-4">Modal Container</p>
+      <CustomButton @click="toggleModalContainerCoupons"> 🧊 Modal Container Open Select coupon Mockup </CustomButton>
+      <UIModalContainer v-model="isModalContainerOpenCoupons" title="Select Coupon" style-title="style-headline-4"
+        style-modal-container="w-[998px] h-[558px]" :actions="modalActionsContainer" :close-on-backdrop="true"
+        :close-on-esc="true" :persistent="false">
+        <CouponMockup />
+      </UIModalContainer>
+      <!-- Booking Detail -->
+      <div class="my-4">
+        <CustomButton @click="toggleModalContainerBooking"> 🧊 Modal Container Open Booking Details Mockup
+        </CustomButton>
+        <UIModalContainer v-model="isModalContainerOpenBooking" title="Booking Deatil" style-title="style-headline-4"
+          style-modal-container="w-[691px] h-[510px]" :close-on-backdrop="true" :close-on-esc="true" :headerActions="modalActionsHeaderBooking"
+          :persistent="false">
+          <BookingMockup />
+        </UIModalContainer>
       </div>
     </section>
   </div>
