@@ -42,7 +42,7 @@ import {
 import CustomTag from '@/components/ui/CustomTag.vue'
 import StepperBar from '@/components/ui/step-component/StepperBar.vue'
 import AppLoader from '@/components/ui/AppLoader.vue'
-import ToastContainer from '@/components/ui/ToastContainer.vue'
+import ToastContainer from '@/components/ui/toast/ToastContainer.vue'
 import { useToast, type ToastPosition } from '@/composables/useToast'
 import CouponMockup from '@/components/ui/modal/mockup/CouponMockup.vue'
 import BookingMockup from '@/components/ui/modal/mockup/BookingMockup.vue'
