@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
-import type { BaseInputProps, BaseInputEmits } from './BaseInput.types'
+import type { BaseInputProps, BaseInputEmits } from '../../../types/baseInput'
 import SearchIcon from '@/assets/icons/SearchIcon.vue'
 import XIcon from '@/assets/icons/XIcon.vue'
 

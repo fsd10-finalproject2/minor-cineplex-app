@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, computed, onUnmounted } from 'vue'
-import type { BaseTextareaProps, BaseTextareaEmits } from './BaseTextare.types'
+import type { BaseTextareaProps, BaseTextareaEmits } from '@/types/baseTextarea'
 import ResizeIcon from '@/assets/icons/ResizeIcon.vue'
 
 const props = withDefaults(defineProps<BaseTextareaProps>(), {

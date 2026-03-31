@@ -1,4 +1,4 @@
-import type { InputState } from '../BaseInput/BaseInput.types'
+import type { InputState } from './baseInput'
 
 export interface BaseTextareaProps {
   modelValue: string
