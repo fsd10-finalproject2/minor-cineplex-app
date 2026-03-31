@@ -14,6 +14,7 @@ import type { Page } from '@/types/navbarMenu'
 // import LoginPage from '@/views/LoginPage.vue'
 // import RegisterPage from '@/views/RegisterPage.vue'
 import DesignSystem from '@/views/DesignSystem.vue'
+import SeatBookingView from '@/views/SeatBookingView.vue'
 
 const router = createRouter({
   history: createWebHistory(),
@@ -23,8 +24,8 @@ const router = createRouter({
       component: MainLayout,
       children: [
         {
-          path: '',
-          component: DesignSystem,
+          path: 'booking',
+          component: SeatBookingView,
           meta: { requiresAuth: true },
         },
       ],
