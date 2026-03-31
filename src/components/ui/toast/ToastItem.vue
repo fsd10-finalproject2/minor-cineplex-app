@@ -18,8 +18,6 @@ const variantClass = computed(() => {
         success: "bg-green-50 opacity-90 text-white",
         error: "bg-red-50 opacity-90 text-white",
     } as const
-    console.log(variantStatus[props.toast.variant ?? "success"]);
-    console.log(props.toast.variant);
     return variantStatus[props.toast.variant ?? "success"]
 });
 

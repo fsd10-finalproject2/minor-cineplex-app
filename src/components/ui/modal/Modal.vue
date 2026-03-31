@@ -6,7 +6,7 @@ export default {
 
 <script setup lang="ts">
 import { computed, onUnmounted, useId, useSlots, watch } from '@vue/runtime-core'
-import CustomButton from './CustomButton.vue'
+import CustomButton from '../CustomButton.vue'
 import XIcon from '@/assets/icons/XIcon.vue'
 
 /** ขนาดความกว้างของกล่องโมดอล (จำกัด max-width และเต็มความกว้างบนจอเล็ก) */
@@ -165,11 +165,11 @@ defineExpose({ close })
 <template>
     <Teleport to="body">
         <div v-if="modelValue"
-            class="fixed inset-0 z-500 flex items-center justify-center px-4 overflow-hidden shadow-[4px_4px_30px_0px_rgba(0,0,0,0.5)]">
-            <div class="absolute inset-0 backdrop-blur-xs" aria-hidden="true" @click="onBackdropClick" />
+            class="fixed inset-0 z-50 flex items-center justify-center px-4 overflow-hidden shadow-[4px_4px_30px_0px_rgba(0,0,0,0.5)]">
+            <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" aria-hidden="true" @click="onBackdropClick" />
 
             <section role="dialog" aria-modal="true" :aria-labelledby="title ? titleId : undefined"
-                class="relative z-100 flex flex-col gap-4 w-full p-6 overflow-hidden rounded-2xl border
+                class="relative z-50 flex flex-col gap-4 w-full p-6 overflow-hidden rounded-2xl border
                 border-gray-200 bg-gray-800 text-white shadow-2xl"
                 :class="sizeClass">
                 <header v-if="hasHeaderSlot || title || showCloseButton"
