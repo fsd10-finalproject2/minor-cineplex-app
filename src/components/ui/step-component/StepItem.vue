@@ -23,7 +23,7 @@ const props = withDefaults(
 <template>
   <div class="relative flex flex-col items-center gap-1.5 shrink-0">
     <!-- Connecting Line -->
-    <div 
+    <div
       v-if="!isLast"
       class="absolute top-5 left-1/2 w-[calc(100%+40px)] h-px bg-white/10 z-0"
     ></div>
@@ -31,10 +31,10 @@ const props = withDefaults(
     <!-- Circle -->
     <div
       :class="[
-        'w-10 h-10 rounded-full flex items-center justify-center transition-all relative z-10',
-        props.status === 'completed' && 'bg-[#1D3D7C]',
-        props.status === 'active' && 'bg-[#407BFF]',
-        props.status === 'inactive' && 'bg-[#070C1B] border border-gray-100/20',
+        'w-11 h-11 rounded-full flex items-center justify-center transition-all relative z-10',
+        props.status === 'completed' && 'bg-blue-200',
+        props.status === 'active' && 'bg-blue-100',
+        props.status === 'inactive' && 'bg-gray-100 border border-gray-100/20',
       ]"
     >
       <DoneIcon v-if="props.status === 'completed'" />

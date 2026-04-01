@@ -28,7 +28,7 @@ const getBaseStatus = (row: string, num: number) => {
 const getSeatStatus = (row: string, num: number) => {
   const baseStatus = getBaseStatus(row, num)
   if (baseStatus !== 'available') return baseStatus
-  
+
   const seatId = `${row}-${num}`
   return selectedSeats.value.includes(seatId) ? 'selected' : 'available'
 }
@@ -39,7 +39,7 @@ const toggleSeat = (row: string, num: number) => {
 
   const seatId = `${row}-${num}`
   const existingIndex = selectedSeats.value.indexOf(seatId)
-  
+
   if (existingIndex > -1) {
     selectedSeats.value.splice(existingIndex, 1) // Deselect
   } else {
@@ -51,7 +51,7 @@ const toggleSeat = (row: string, num: number) => {
 <template>
   <div class="booking-page min-h-screen">
     <!-- Section 2: Progress Section (Stepper) -->
-    <section class="progress-section bg-[#070C1B] flex items-center justify-center border-b border-white/5">
+    <section class="progress-section w-full bg-gray-0 flex items-center justify-center border-b border-white/5">
       <StepperBar :steps="currentSteps" />
     </section>
 
@@ -80,7 +80,7 @@ const toggleSeat = (row: string, num: number) => {
                 <!-- Left Block of Seats -->
                 <div class="flex items-center justify-between w-[46%] md:w-auto md:gap-3">
                   <div v-for="n in 5" :key="n" class="w-[18.66px] h-[18.66px] md:w-10 md:h-10 shrink-0">
-                    <SeatIcon 
+                    <SeatIcon
                       :status="getSeatStatus(rowChar, n)"
                       @click="toggleSeat(rowChar, n)"
                       :class="getSeatStatus(rowChar, n) === 'available' || getSeatStatus(rowChar, n) === 'selected' ? 'cursor-pointer hover:scale-[1.15] transition-transform' : 'cursor-not-allowed opacity-80'"
@@ -91,7 +91,7 @@ const toggleSeat = (row: string, num: number) => {
                 <!-- Right Block of Seats -->
                 <div class="flex items-center justify-between w-[46%] md:w-auto md:gap-3">
                   <div v-for="n in 5" :key="n + 5" class="w-[18.66px] h-[18.66px] md:w-10 md:h-10 shrink-0">
-                    <SeatIcon 
+                    <SeatIcon
                       :status="getSeatStatus(rowChar, n + 5)"
                       @click="toggleSeat(rowChar, n + 5)"
                       :class="getSeatStatus(rowChar, n + 5) === 'available' || getSeatStatus(rowChar, n + 5) === 'selected' ? 'cursor-pointer hover:scale-[1.15] transition-transform' : 'cursor-not-allowed opacity-80'"
