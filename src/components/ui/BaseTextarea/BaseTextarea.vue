@@ -27,7 +27,7 @@ const startHeight = ref(0)
 
 const wrapperClasses = computed(() => {
   // 1. Base styles
-  const base = 'relative border transition-all duration-150 rounded-sm'
+  const base = 'relative border transition-all duration-150 rounded-sm bg-gray-100 overflow-hidden'
 
   // 2. Visual styles per state
   const styles = {

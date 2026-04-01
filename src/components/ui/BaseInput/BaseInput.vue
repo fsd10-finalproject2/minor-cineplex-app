@@ -22,7 +22,8 @@ const isFilled = computed(() => !!props.modelValue && props.modelValue.length > 
 //บางสีลองใช้แล้วมันแปลก ๆ จาก figma เลยหาสีที่ใกล้เคียงกับ figma
 const wrapperClasses = computed(() => {
   // 1. Base Style
-  const layout = 'relative flex items-center h-10 rounded-sm border transition-all duration-150'
+  const layout =
+    'flex items-center h-10 rounded-sm border transition-all duration-150 pl-[16px] py-[12px] pr-[12px] gap-[4px]'
 
   // 2. Visual styles per state
   const styles = {
@@ -57,17 +58,12 @@ const labelClasses = computed(() => {
 })
 
 const inputClasses = computed(() => {
-  const base = 'flex-1 h-full bg-transparent border-none outline-none text-[16px] py-[12px]'
+  const base = 'flex-1 h-full bg-transparent border-none outline-none text-[16px]'
   const styles = {
     disabled: 'text-[#3a4060] cursor-not-allowed placeholder:text-[#3a4060]',
     default: 'text-white placeholder:text-gray-300',
   }
-  return [
-    base,
-    isDisabled.value ? styles.disabled : styles.default,
-    props.showLeftIcon ? 'pl-[40px]' : 'pl-[16px]',
-    props.showRightIcon ? 'pr-[40px]' : 'pr-[12px]',
-  ]
+  return [base, isDisabled.value ? styles.disabled : styles.default]
 })
 
 const helpTextClasses = computed(() => {
@@ -86,7 +82,7 @@ const helpTextClasses = computed(() => {
 })
 
 const leftIconClasses = computed(() => {
-  const base = 'absolute left-2.5 flex items-center justify-center pointer-events-none'
+  const base = 'flex items-center justify-center pointer-events-none'
   const styles = {
     disabled: 'text-[#3a4060]',
     default: 'text-[#4e567a]',
@@ -133,7 +129,7 @@ function onClear() {
         v-if="showRightIcon && modelValue && !isDisabled"
         type="button"
         aria-label="Clear input"
-        class="absolute right-2.5 flex items-center justify-center text-[#4e567a] rounded p-0.5 cursor-pointer transition-colors duration-150 hover:text-[#c8ccde] hover:bg-white/[0.06]"
+        class="flex items-center justify-center text-[#4e567a] rounded p-0.5 cursor-pointer transition-colors duration-150 hover:text-[#c8ccde] hover:bg-white/[0.06]"
         @click="onClear"
       >
         <XIcon />
