@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { ref } from 'vue'
 import StepperBar from '@/components/ui/step-component/StepperBar.vue'
 import SeatIcon from '@/components/ui/SeatIcon.vue'
 import { CalendarIcon, ClockLineIcon, ShopIcon, PinIcon } from '@/assets/icons'
@@ -14,11 +15,36 @@ const currentSteps = [
 // --- Mock Theater Data (Grid E-A, Left-Right Columns) ---
 const rows = ['E', 'D', 'C', 'B', 'A']
 
-const generateMockStatus = (row: string, num: number) => {
+// Interactive State
+const selectedSeats = ref<string[]>([])
+
+const getBaseStatus = (row: string, num: number) => {
   if ((row === 'A' || row === 'B') && num > 7) return 'booked'
   if (row === 'C' && (num === 3 || num === 4)) return 'reserved'
   if (row === 'E' && num === 3) return 'booked'
   return 'available'
+}
+
+const getSeatStatus = (row: string, num: number) => {
+  const baseStatus = getBaseStatus(row, num)
+  if (baseStatus !== 'available') return baseStatus
+  
+  const seatId = `${row}-${num}`
+  return selectedSeats.value.includes(seatId) ? 'selected' : 'available'
+}
+
+const toggleSeat = (row: string, num: number) => {
+  const baseStatus = getBaseStatus(row, num)
+  if (baseStatus === 'booked' || baseStatus === 'reserved') return // Cannot select unavailable seats
+
+  const seatId = `${row}-${num}`
+  const existingIndex = selectedSeats.value.indexOf(seatId)
+  
+  if (existingIndex > -1) {
+    selectedSeats.value.splice(existingIndex, 1) // Deselect
+  } else {
+    selectedSeats.value.push(seatId) // Select
+  }
 }
 </script>
 
@@ -54,14 +80,22 @@ const generateMockStatus = (row: string, num: number) => {
                 <!-- Left Block of Seats -->
                 <div class="flex items-center justify-between w-[46%] md:w-auto md:gap-3">
                   <div v-for="n in 5" :key="n" class="w-[18.66px] h-[18.66px] md:w-10 md:h-10 shrink-0">
-                    <SeatIcon :status="generateMockStatus(rowChar, n)" />
+                    <SeatIcon 
+                      :status="getSeatStatus(rowChar, n)"
+                      @click="toggleSeat(rowChar, n)"
+                      :class="getSeatStatus(rowChar, n) === 'available' || getSeatStatus(rowChar, n) === 'selected' ? 'cursor-pointer hover:scale-[1.15] transition-transform' : 'cursor-not-allowed opacity-80'"
+                    />
                   </div>
                 </div>
 
                 <!-- Right Block of Seats -->
                 <div class="flex items-center justify-between w-[46%] md:w-auto md:gap-3">
                   <div v-for="n in 5" :key="n + 5" class="w-[18.66px] h-[18.66px] md:w-10 md:h-10 shrink-0">
-                    <SeatIcon :status="generateMockStatus(rowChar, n + 5)" />
+                    <SeatIcon 
+                      :status="getSeatStatus(rowChar, n + 5)"
+                      @click="toggleSeat(rowChar, n + 5)"
+                      :class="getSeatStatus(rowChar, n + 5) === 'available' || getSeatStatus(rowChar, n + 5) === 'selected' ? 'cursor-pointer hover:scale-[1.15] transition-transform' : 'cursor-not-allowed opacity-80'"
+                    />
                   </div>
                 </div>
               </div>
