@@ -190,8 +190,6 @@ const toggleSeat = (row: string, num: number) => {
 <style scoped>
 .progress-section {
   width: 100%;
-  max-width: 1440px;
-  margin: 0 auto;
   height: 102px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
