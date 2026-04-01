@@ -32,7 +32,7 @@ const props = withDefaults(
     <div
       :class="[
         'w-11 h-11 rounded-full flex items-center justify-center transition-all relative z-10',
-        props.status === 'completed' && 'bg-blue-200',
+        props.status === 'completed' && 'bg-blue-200 text-white',
         props.status === 'active' && 'bg-blue-100',
         props.status === 'inactive' && 'bg-gray-100 border border-gray-100/20',
       ]"

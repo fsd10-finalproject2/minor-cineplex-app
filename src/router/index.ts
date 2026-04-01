@@ -28,6 +28,11 @@ const router = createRouter({
           component: SeatBookingView,
           meta: { requiresAuth: true },
         },
+        {
+          path: 'payment',
+          component: () => import('@/views/payment/PaymentView.vue'),
+          meta: { requiresAuth: true },
+        },
       ],
     },
     // {
