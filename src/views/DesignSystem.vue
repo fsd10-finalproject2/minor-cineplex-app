@@ -14,11 +14,6 @@ import CaratButton from '@/components/ui/CaratButton.vue'
 import SidebarMenu from '@/components/ui/SidebarMenu.vue'
 // import SeatIcon from '@/components/ui/SeatIcon/SeatIcon.vue'
 import CinemaCard from '@/components/ui/CinemaCard.vue'
-import BaseInput from '@/components/ui/BaseInput/BaseInput.vue'
-import BaseTextarea from '@/components/ui/BaseTextarea/BaseTextarea.vue'
-
-const inputValue = ref('')
-const textareaValue = ref('')
 import {
   CalendarIcon,
   ChevronDownIcon,
@@ -54,7 +49,12 @@ import ToastContainer from '@/components/ui/toast/ToastContainer.vue'
 import { useToast, type ToastPosition } from '@/composables/useToast'
 import CouponMockup from '@/components/ui/modal/mockup/CouponMockup.vue'
 import BookingMockup from '@/components/ui/modal/mockup/BookingMockup.vue'
+import BaseInput from '@/components/ui/BaseInput/BaseInput.vue'
+import BaseTextarea from '@/components/ui/BaseTextarea/BaseTextarea.vue'
 const { toggleTheme } = useTheme()
+
+const inputValue = ref('')
+const textareaValue = ref('')
 
 // ── Sub-components ─────────────────────────────────────────────────────
 
@@ -117,7 +117,6 @@ function mockFetch() {
 }
 
 const isModalOpen = ref(false)
-const isModalOpen = ref(false)
 const isModalContainerOpenCoupons = ref(false)
 const isModalContainerOpenBooking = ref(false)
 const toggleModalContainerCoupons = () => {
@@ -148,7 +147,6 @@ const modalActions: ModalAction[] = [
     },
   },
 ]
-const { addToast } = useToast()
 const modalActionsContainer: ModalActionContainer[] = [
   {
     id: 'back',
@@ -271,11 +269,7 @@ const showToast = (position: ToastPosition) => {
         <div>
           <p class="style-label text-blue-100 mb-6 uppercase">Sidebar Integrated Component</p>
           <div class="flex gap-12 items-start">
-            <SidebarMenu
-              :items="sidebarItems"
-              :active-id="selectedMenuId"
-              @select="(id) => (selectedMenuId = id)"
-            />
+            <SidebarMenu :items="sidebarItems" :active-id="selectedMenuId" />
 
             <div
               class="flex-1 p-10 bg-gray-0 rounded-lg border border-gray-400/10 min-h-[290px] flex items-center justify-center"
@@ -382,11 +376,9 @@ const showToast = (position: ToastPosition) => {
     <!-- Form Elements -->
     <section class="mb-16">
       <SectionTitle>Form Elements</SectionTitle>
-
       <div class="max-w-md space-y-5">
         <!-- BaseInput Component -->
         <div class="space-y-4">
-          <!-- :show-right/left-icon="false" ถ้าไม่ต้องการ icon ใน input-->
           <BaseInput
             v-model="inputValue"
             label="Default State"
@@ -410,8 +402,6 @@ const showToast = (position: ToastPosition) => {
             help-text="This field is disabled"
           />
         </div>
-
-        <!-- BaseInput Component -->
         <div>
           <BaseTextarea
             v-model="textareaValue"
@@ -423,7 +413,6 @@ const showToast = (position: ToastPosition) => {
             :max-rows="10"
           />
         </div>
-
         <div>
           <label class="style-label block mb-1.5 text-gray-200 dark:text-gray-300">
             Email address
@@ -525,6 +514,40 @@ const showToast = (position: ToastPosition) => {
         <CustomButton @click="showToast('bottom-center')">Bottom Center</CustomButton>
         <CustomButton @click="showToast('bottom-right')">Bottom Right</CustomButton>
         <CustomButton @click="showToast('center')">Center</CustomButton>
+      </div>
+      <p class="style-label text-blue-100 mb-4 my-4">Modal Container</p>
+      <CustomButton @click="toggleModalContainerCoupons">
+        🧊 Modal Container Open Select coupon Mockup
+      </CustomButton>
+      <UIModalContainer
+        v-model="isModalContainerOpenCoupons"
+        title="Select Coupon"
+        style-title="style-headline-4"
+        style-modal-container="w-[998px] h-[558px]"
+        :actions="modalActionsContainer"
+        :close-on-backdrop="true"
+        :close-on-esc="true"
+        :persistent="false"
+      >
+        <CouponMockup />
+      </UIModalContainer>
+      <!-- Booking Detail -->
+      <div class="my-4">
+        <CustomButton @click="toggleModalContainerBooking">
+          🧊 Modal Container Open Booking Details Mockup
+        </CustomButton>
+        <UIModalContainer
+          v-model="isModalContainerOpenBooking"
+          title="Booking Deatil"
+          style-title="style-headline-4"
+          style-modal-container="w-[691px] h-[510px]"
+          :close-on-backdrop="true"
+          :close-on-esc="true"
+          :headerActions="modalActionsHeaderBooking"
+          :persistent="false"
+        >
+          <BookingMockup />
+        </UIModalContainer>
       </div>
     </section>
   </div>
