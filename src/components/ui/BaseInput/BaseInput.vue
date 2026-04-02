@@ -19,18 +19,17 @@ const isFocused = ref(false)
 const isDisabled = computed(() => props.state === 'disable')
 const isError = computed(() => props.state === 'error')
 const isFilled = computed(() => !!props.modelValue && props.modelValue.length > 0)
-//บางสีลองใช้แล้วมันแปลก ๆ จาก figma เลยหาสีที่ใกล้เคียงกับ figma
 const wrapperClasses = computed(() => {
   // 1. Base Style
   const layout =
-    'flex items-center h-10 rounded-sm border transition-all duration-150 pl-[16px] py-[12px] pr-[12px] gap-[4px]'
+    'flex items-center rounded-sm border transition-all duration-150 pl-[16px] py-[12px] pr-[12px] gap-[4px]'
 
   // 2. Visual styles per state
   const styles = {
-    error: 'bg-gray-100 border-[#e05252] shadow-[0_0_0_3px_rgba(224,82,82,0.10)]',
+    error: 'bg-gray-100 border-[#F34335] shadow-[0_0_0_3px_rgba(224,82,82,0.10)]',
     disabled: 'bg-gray-100/50 border-transparent cursor-not-allowed',
     focused: 'bg-gray-100 border-gray-300 shadow-[0_0_0_3px_rgba(108,111,255,0.12)]',
-    filled: 'bg-gray-100 border-[#3d4566]',
+    filled: 'bg-gray-100 border-gray-200',
     default: 'bg-gray-100 border-gray-200',
   }
 
@@ -49,30 +48,32 @@ const wrapperClasses = computed(() => {
 })
 
 const labelClasses = computed(() => {
-  const base = 'text-[16px] font-normal style-body-2 tracking-wide select-none'
+  const base = 'text-[16px] style-body-2 tracking-wide select-none'
   const styles = {
-    disabled: 'text-[#3a4060]',
+    error: 'text-gray-400',
+    disabled: 'text-gray-400/50',
     default: 'text-gray-400',
   }
-  return [base, isDisabled.value ? styles.disabled : styles.default]
+  return [base, isDisabled.value ? styles.disabled : isError.value ? styles.error : styles.default]
 })
 
 const inputClasses = computed(() => {
   const base = 'flex-1 h-full bg-transparent border-none outline-none text-[16px]'
   const styles = {
-    disabled: 'text-[#3a4060] cursor-not-allowed placeholder:text-[#3a4060]',
+    error: 'text-white',
+    disabled: 'text-gray-300/50 cursor-not-allowed',
     default: 'text-white placeholder:text-gray-300',
   }
-  return [base, isDisabled.value ? styles.disabled : styles.default]
+  return [base, isDisabled.value ? styles.disabled : isError.value ? styles.error : styles.default]
 })
 
 const helpTextClasses = computed(() => {
   const base = 'text-xs leading-snug m-0'
   const styles = {
-    error: 'text-[#e05252]',
-    disabled: 'text-[#3a4060]',
-    default: 'text-[#6b7399]',
-  } //ใช้สีใกล้เคียงกับ figma
+    error: 'text-[#F34335]',
+    disabled: 'text-gray-300/50',
+    default: 'text-gray-300',
+  }
   const textStyle = isError.value
     ? styles.error
     : isDisabled.value
@@ -84,10 +85,11 @@ const helpTextClasses = computed(() => {
 const leftIconClasses = computed(() => {
   const base = 'flex items-center justify-center pointer-events-none'
   const styles = {
-    disabled: 'text-[#3a4060]',
-    default: 'text-[#4e567a]',
+    disabled: 'text-white/50',
+    error: 'text-white',
+    default: 'text-gray-400',
   }
-  return [base, isDisabled.value ? styles.disabled : styles.default]
+  return [base, isDisabled.value ? styles.disabled : isError.value ? styles.error : styles.default]
 })
 
 function onInput(event: Event) {
@@ -129,7 +131,7 @@ function onClear() {
         v-if="showRightIcon && modelValue && !isDisabled"
         type="button"
         aria-label="Clear input"
-        class="flex items-center justify-center text-[#4e567a] rounded p-0.5 cursor-pointer transition-colors duration-150 hover:text-[#c8ccde] hover:bg-white/[0.06]"
+        class="flex items-center justify-center text-gray-300"
         @click="onClear"
       >
         <XIcon />

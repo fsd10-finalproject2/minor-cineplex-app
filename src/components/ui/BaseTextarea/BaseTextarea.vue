@@ -31,7 +31,7 @@ const wrapperClasses = computed(() => {
 
   // 2. Visual styles per state
   const styles = {
-    disabled: 'border-transparent cursor-not-allowed', //เพิ่มเติมจาก figma
+    disabled: 'border-transparent cursor-not-allowed',
     focused: 'border-gray-300 shadow-[0_0_0_3px_rgba(108,111,255,0.12)] text-gray-300',
     filled: 'border-gray-200',
     default: 'border-gray-200',
@@ -52,7 +52,7 @@ const wrapperClasses = computed(() => {
 const labelClasses = computed(() => {
   const base = 'text-[16px] font-normal tracking-wide select-none style-body-2'
   const styles = {
-    disabled: 'text-[#3a4060]',
+    disabled: 'text-gray-100/50',
     default: 'text-gray-400',
   }
   return [base, isDisabled.value ? styles.disabled : styles.default]
@@ -62,7 +62,7 @@ const textareaClasses = computed(() => {
   const base =
     'w-full bg-gray-100 border-none outline-none resize-none text-[16px] pt-[8px] pl-[8px] pb-[2px] pr-[2px] style-body-2'
   const styles = {
-    disabled: 'text-[#3a4060] cursor-not-allowed placeholder:text-[#3a4060]',
+    disabled: 'text-gray-100/50 cursor-not-allowed placeholder:text-text-gray-100/50',
     default: 'text-white placeholder:text-gray-300',
   }
   return [base, isDisabled.value ? styles.disabled : styles.default]
@@ -71,8 +71,8 @@ const textareaClasses = computed(() => {
 const resizeHandleClasses = computed(() => {
   const base = 'absolute bottom-1 right-1 cursor-ns-resize select-none'
   const styles = {
-    disabled: 'text-[#3a4060] pointer-events-none',
-    resizing: 'text-[#6c6fff]',
+    disabled: 'text-gray-100/50 pointer-events-none',
+    resizing: 'text-gray-300',
     default: 'text-gray-200',
   }
   const visualStyle = isDisabled.value
@@ -148,8 +148,6 @@ function stopResize() {
 onUnmounted(() => {
   stopResize()
 })
-
-//^^^^^ Resize Handler ^^^^^
 </script>
 <template>
   <div class="flex flex-col gap-[4px]">
