@@ -11,6 +11,7 @@ const props = withDefaults(defineProps<BaseInputProps>(), {
   label: '',
   placeholder: '',
   helpText: '',
+  type: 'text',
 })
 
 const emit = defineEmits<BaseInputEmits>()
@@ -121,7 +122,7 @@ function onClear() {
         :placeholder="placeholder"
         :disabled="isDisabled"
         :class="inputClasses"
-        type="text"
+        :type="type"
         @input="onInput"
         @focus="isFocused = true"
         @blur="isFocused = false"

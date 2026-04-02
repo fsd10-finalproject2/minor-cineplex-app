@@ -5,6 +5,7 @@ import { UserIcon } from '@/assets/icons'
 import { useToast } from '@/composables/useToast'
 import ProfileWrapper from '@/components/user-profile/ProfileWrapper.vue'
 import BaseInput from '@/components/ui/BaseInput/BaseInput.vue'
+import CustomButton from '@/components/ui/CustomButton.vue'
 
 const { addToast } = useToast()
 
@@ -30,7 +31,7 @@ const handleSave = () => {
 <template>
   <ProfileWrapper
     title="Profile"
-    description="Keep your personal details private. Information you add here is visible to anyone who can view your profile"
+    :description="'Keep your personal details private.\nInformation you add here is visible to anyone who can view your profile'"
   >
     <!-- Avatar Upload Section -->
     <div class="flex items-center gap-4 py-2">
@@ -71,12 +72,12 @@ const handleSave = () => {
 
       <!-- Save Button -->
       <div class="pt-4">
-        <button
+        <CustomButton
+          label="Save"
+          variant="secondary"
           @click="handleSave"
-          class="px-10 py-2.5 rounded border border-white/20 text-white font-bold hover:bg-white/5 hover:border-white/40 transition-all"
-        >
-          Save
-        </button>
+          class="px-10"
+        />
       </div>
     </div>
   </ProfileWrapper>
