@@ -3,7 +3,10 @@ import { defineComponent, h, ref, markRaw } from 'vue'
 import { useTheme } from '@/composables/useTheme'
 import CustomButton from '@/components/ui/CustomButton.vue'
 import UIModal, { type ModalAction } from '@/components/ui/modal/Modal.vue'
-import UIModalContainer, { type ModalActionContainer, type ModalActionHeader } from '@/components/ui/modal/ModalContainer.vue'
+import UIModalContainer, {
+  type ModalActionContainer,
+  type ModalActionHeader,
+} from '@/components/ui/modal/ModalContainer.vue'
 import TabGroup from '@/components/ui/TabGroup.vue'
 import MenuLink from '@/components/ui/MenuLink.vue'
 import CustomPagination from '@/components/ui/CustomPagination.vue'
@@ -46,7 +49,12 @@ import ToastContainer from '@/components/ui/toast/ToastContainer.vue'
 import { useToast, type ToastPosition } from '@/composables/useToast'
 import CouponMockup from '@/components/ui/modal/mockup/CouponMockup.vue'
 import BookingMockup from '@/components/ui/modal/mockup/BookingMockup.vue'
+import BaseInput from '@/components/ui/BaseInput/BaseInput.vue'
+import BaseTextarea from '@/components/ui/BaseTextarea/BaseTextarea.vue'
 const { toggleTheme } = useTheme()
+
+const inputValue = ref('')
+const textareaValue = ref('')
 
 // ── Sub-components ─────────────────────────────────────────────────────
 
@@ -108,14 +116,14 @@ function mockFetch() {
   }, 2000)
 }
 
-const isModalOpen = ref(false);
-const isModalContainerOpenCoupons = ref(false);
-const isModalContainerOpenBooking = ref(false);
+const isModalOpen = ref(false)
+const isModalContainerOpenCoupons = ref(false)
+const isModalContainerOpenBooking = ref(false)
 const toggleModalContainerCoupons = () => {
-  isModalContainerOpenCoupons.value = !isModalContainerOpenCoupons.value;
+  isModalContainerOpenCoupons.value = !isModalContainerOpenCoupons.value
 }
 const toggleModalContainerBooking = () => {
-  isModalContainerOpenBooking.value = !isModalContainerOpenBooking.value;
+  isModalContainerOpenBooking.value = !isModalContainerOpenBooking.value
 }
 const toggleModal = () => {
   isModalOpen.value = !isModalOpen.value
@@ -154,7 +162,7 @@ const modalActionsContainer: ModalActionContainer[] = [
     styleButton: 'w-[117px] h-[48px]',
     closeOnClick: true,
     handler: () => {
-      toggleModalContainerBooking();
+      toggleModalContainerBooking()
     },
   },
 ]
@@ -166,10 +174,10 @@ const modalActionsHeaderBooking: ModalActionHeader[] = [
     closeOnClick: true,
     handler: () => {
       window.open('https://youtu.be/i2Z4JaFnMjU?si=jLiZguLKYJdMsspq', '_blank')
-    }
+    },
   },
 ]
-const { addToast } = useToast();
+const { addToast } = useToast()
 const showToast = (position: ToastPosition) => {
   addToast({
     title: 'Attention needed',
@@ -355,7 +363,11 @@ const showToast = (position: ToastPosition) => {
           <!-- With Distance -->
           <div>
             <p class="style-help-text text-gray-200 mb-3 ml-2 italic">With Distance Display</p>
-            <CinemaCard name="Minor City" address="999 Wayne street, Gotham city" distance="3.34 km" />
+            <CinemaCard
+              name="Minor City"
+              address="999 Wayne street, Gotham city"
+              distance="3.34 km"
+            />
           </div>
         </div>
       </div>
@@ -364,8 +376,43 @@ const showToast = (position: ToastPosition) => {
     <!-- Form Elements -->
     <section class="mb-16">
       <SectionTitle>Form Elements</SectionTitle>
-
       <div class="max-w-md space-y-5">
+        <!-- BaseInput Component -->
+        <div class="space-y-4">
+          <BaseInput
+            v-model="inputValue"
+            label="Default State"
+            placeholder="Enter text here..."
+            help-text="This is help text"
+          />
+
+          <BaseInput
+            v-model="inputValue"
+            label="Error State"
+            placeholder="Enter text here..."
+            state="error"
+            help-text="Something went wrong"
+          />
+
+          <BaseInput
+            v-model="inputValue"
+            label="Disabled State"
+            placeholder="Enter text here..."
+            state="disable"
+            help-text="This field is disabled"
+          />
+        </div>
+        <div>
+          <BaseTextarea
+            v-model="textareaValue"
+            label="Text Area Label"
+            placeholder="Placeholder Text"
+            help-text="This field is default"
+            :rows="6"
+            :min-rows="5"
+            :max-rows="10"
+          />
+        </div>
         <div>
           <label class="style-label block mb-1.5 text-gray-200 dark:text-gray-300">
             Email address
@@ -442,10 +489,6 @@ const showToast = (position: ToastPosition) => {
       </div>
     </section>
 
-
-
-
-
     <section class="mb-16">
       <SectionTitle>Feedback</SectionTitle>
       <p class="style-label text-blue-100 mb-4">Modal</p>
@@ -473,19 +516,36 @@ const showToast = (position: ToastPosition) => {
         <CustomButton @click="showToast('center')">Center</CustomButton>
       </div>
       <p class="style-label text-blue-100 mb-4 my-4">Modal Container</p>
-      <CustomButton @click="toggleModalContainerCoupons"> 🧊 Modal Container Open Select coupon Mockup </CustomButton>
-      <UIModalContainer v-model="isModalContainerOpenCoupons" title="Select Coupon" style-title="style-headline-4"
-        style-modal-container="w-[998px] h-[558px]" :actions="modalActionsContainer" :close-on-backdrop="true"
-        :close-on-esc="true" :persistent="false">
+      <CustomButton @click="toggleModalContainerCoupons">
+        🧊 Modal Container Open Select coupon Mockup
+      </CustomButton>
+      <UIModalContainer
+        v-model="isModalContainerOpenCoupons"
+        title="Select Coupon"
+        style-title="style-headline-4"
+        style-modal-container="w-[998px] h-[558px]"
+        :actions="modalActionsContainer"
+        :close-on-backdrop="true"
+        :close-on-esc="true"
+        :persistent="false"
+      >
         <CouponMockup />
       </UIModalContainer>
       <!-- Booking Detail -->
       <div class="my-4">
-        <CustomButton @click="toggleModalContainerBooking"> 🧊 Modal Container Open Booking Details Mockup
+        <CustomButton @click="toggleModalContainerBooking">
+          🧊 Modal Container Open Booking Details Mockup
         </CustomButton>
-        <UIModalContainer v-model="isModalContainerOpenBooking" title="Booking Deatil" style-title="style-headline-4"
-          style-modal-container="w-[691px] h-[510px]" :close-on-backdrop="true" :close-on-esc="true" :headerActions="modalActionsHeaderBooking"
-          :persistent="false">
+        <UIModalContainer
+          v-model="isModalContainerOpenBooking"
+          title="Booking Deatil"
+          style-title="style-headline-4"
+          style-modal-container="w-[691px] h-[510px]"
+          :close-on-backdrop="true"
+          :close-on-esc="true"
+          :headerActions="modalActionsHeaderBooking"
+          :persistent="false"
+        >
           <BookingMockup />
         </UIModalContainer>
       </div>
