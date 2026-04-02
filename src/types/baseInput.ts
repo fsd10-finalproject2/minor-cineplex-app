@@ -6,6 +6,7 @@ export interface BaseInputProps {
   state?: 'default' | 'error' | 'disable' //สถานะของ input
   showRightIcon?: boolean //ไอคอนด้านขวาของช่อง Input
   showLeftIcon?: boolean //ไอคอนด้านซ้ายของช่อง Input
+  type?: string // Input type (e.g. 'text', 'password')
 }
 
 export interface BaseInputEmits {
