@@ -6,7 +6,7 @@ defineProps<{
 </script>
 
 <template>
-  <div class="user-profile-wrapper w-full max-w-[374px] md:max-w-[800px] min-h-[636px] pb-10 flex flex-col gap-10 overflow-y-auto">
+  <div class="user-profile-wrapper w-full max-w-[374px] md:max-w-[800px] min-h-[636px] pb-10 flex flex-col px-6 md:px-0 gap-10 overflow-y-auto">
 
     <!-- Shared Header Spec (Roboto Condensed 700, 36px/44px) -->
     <div class="flex flex-col gap-8">
