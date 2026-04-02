@@ -51,6 +51,9 @@ import CouponMockup from '@/components/ui/modal/mockup/CouponMockup.vue'
 import BookingMockup from '@/components/ui/modal/mockup/BookingMockup.vue'
 import BaseInput from '@/components/ui/BaseInput/BaseInput.vue'
 import BaseTextarea from '@/components/ui/BaseTextarea/BaseTextarea.vue'
+import { Checkbox } from '@/components/ui/checkbox'
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
+
 const { toggleTheme } = useTheme()
 
 const inputValue = ref('')
@@ -549,6 +552,17 @@ const showToast = (position: ToastPosition) => {
           <BookingMockup />
         </UIModalContainer>
       </div>
+    </section>
+
+    <section class="flex flex-col gap-3">
+      <Checkbox label="Option 1" />
+      <RadioGroup default-value="comfortable">
+        <RadioGroupItem id="r1" value="default" label="Confirm" />
+
+        <RadioGroupItem id="r2" value="comfortable" label="Confirm" />
+
+        <RadioGroupItem id="r3" value="compact" label="Confirm" />
+      </RadioGroup>
     </section>
   </div>
 </template>
