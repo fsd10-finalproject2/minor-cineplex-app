@@ -12,7 +12,7 @@ import {
 } from 'reka-ui'
 import { cn } from '@/lib/utils'
 
-interface Props extends RadioGroupItemProps {
+interface Props extends /* @vue-ignore */ RadioGroupItemProps {
   class?: HTMLAttributes['class']
   label?: string
 }

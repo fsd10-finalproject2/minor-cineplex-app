@@ -4,6 +4,7 @@ import { ref } from 'vue'
 import { UserIcon } from '@/assets/icons'
 import { useToast } from '@/composables/useToast'
 import ProfileWrapper from '@/components/user-profile/ProfileWrapper.vue'
+import BaseInput from '@/components/ui/BaseInput/BaseInput.vue'
 
 const { addToast } = useToast()
 
@@ -34,7 +35,7 @@ const handleSave = () => {
     <!-- Avatar Upload Section -->
     <div class="flex items-center gap-4 py-2">
       <div
-        class="w-30 h-30 rounded-full bg-gray-200 flex items-center justify-center border border-white/10 cursor-pointer hover:bg-gray-300 transition-colors overflow-hidden"
+        class="w-24 h-24 rounded-full bg-[#30364d] flex items-center justify-center border border-white/10 cursor-pointer hover:bg-[#3b4361] transition-colors overflow-hidden"
         @click="handleUpload"
       >
         <UserIcon class="w-10 h-10 text-gray-400" />
@@ -50,29 +51,23 @@ const handleSave = () => {
     <!-- Form Section -->
     <div class="flex flex-col gap-5 mt-2">
       <!-- Name Field -->
-      <div class="flex flex-col gap-2">
-        <label for="name" class="text-gray-400 text-xs font-semibold uppercase tracking-wider">Name</label>
-        <input
-          id="name"
-          v-model="name"
-          type="text"
-          class="bg-[#1c2237] border border-white/10 rounded-md px-4 py-3 text-white placeholder:text-gray-600 focus:outline-none focus:ring-1 focus:ring-blue-500/50 transition-all"
-          placeholder="Your name"
-        >
-      </div>
+      <BaseInput
+        v-model="name"
+        label="Name"
+        placeholder="Your name"
+        :show-left-icon="false"
+        class="w-full md:w-[380px]"
+      />
 
       <!-- Email Field -->
-      <div class="flex flex-col gap-2">
-        <label for="email" class="text-gray-400 text-xs font-semibold uppercase tracking-wider">Email</label>
-        <input
-          id="email"
-          v-model="email"
-          type="email"
-          class="bg-[#1c2237] border border-white/10 rounded-md px-4 py-3 text-white placeholder:text-gray-600 focus:outline-none focus:ring-1 focus:ring-blue-500/50 transition-all opacity-80"
-          placeholder="Your email"
-          disabled
-        >
-      </div>
+      <BaseInput
+        v-model="email"
+        label="Email"
+        placeholder="Your email"
+        state="disable"
+        :show-left-icon="false"
+        class="w-full md:w-[380px]"
+      />
 
       <!-- Save Button -->
       <div class="pt-4">
