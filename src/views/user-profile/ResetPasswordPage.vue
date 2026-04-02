@@ -56,12 +56,12 @@ const handleReset = () => {
       />
 
       <!-- Action Button -->
-      <div class="pt-2">
+      <div class="pt-4">
         <CustomButton 
           label="Reset password" 
           variant="secondary" 
           @click="handleReset"
-          class="px-10" 
+          class="px-10 py-3" 
         />
       </div>
     </div>
