@@ -2,8 +2,8 @@
 import { ref } from 'vue'
 
 import { UserIcon } from '@/assets/icons'
-import ProfileWrapper from '@/components/ui/ProfileWrapper.vue'
 import { useToast } from '@/composables/useToast'
+import ProfileWrapper from '@/components/user-profile/ProfileWrapper.vue'
 
 const { addToast } = useToast()
 
@@ -27,19 +27,19 @@ const handleSave = () => {
 </script>
 
 <template>
-  <ProfileWrapper 
-    title="Profile" 
+  <ProfileWrapper
+    title="Profile"
     description="Keep your personal details private. Information you add here is visible to anyone who can view your profile"
   >
     <!-- Avatar Upload Section -->
     <div class="flex items-center gap-4 py-2">
-      <div 
-        class="w-24 h-24 rounded-full bg-[#30364d] flex items-center justify-center border border-white/10 cursor-pointer hover:bg-[#3b4361] transition-colors overflow-hidden"
+      <div
+        class="w-30 h-30 rounded-full bg-gray-200 flex items-center justify-center border border-white/10 cursor-pointer hover:bg-gray-300 transition-colors overflow-hidden"
         @click="handleUpload"
       >
         <UserIcon class="w-10 h-10 text-gray-400" />
       </div>
-      <button 
+      <button
         @click="handleUpload"
         class="text-sm font-bold text-white underline underline-offset-4 hover:text-blue-400 transition-colors"
       >
@@ -52,7 +52,7 @@ const handleSave = () => {
       <!-- Name Field -->
       <div class="flex flex-col gap-2">
         <label for="name" class="text-gray-400 text-xs font-semibold uppercase tracking-wider">Name</label>
-        <input 
+        <input
           id="name"
           v-model="name"
           type="text"
@@ -64,7 +64,7 @@ const handleSave = () => {
       <!-- Email Field -->
       <div class="flex flex-col gap-2">
         <label for="email" class="text-gray-400 text-xs font-semibold uppercase tracking-wider">Email</label>
-        <input 
+        <input
           id="email"
           v-model="email"
           type="email"
@@ -76,7 +76,7 @@ const handleSave = () => {
 
       <!-- Save Button -->
       <div class="pt-4">
-        <button 
+        <button
           @click="handleSave"
           class="px-10 py-2.5 rounded border border-white/20 text-white font-bold hover:bg-white/5 hover:border-white/40 transition-all"
         >
