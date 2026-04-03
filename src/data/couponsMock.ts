@@ -12,7 +12,7 @@ export const couponsMock: CouponCardItem[] = [
     expiredAt: '2026-04-01',
     image:
       'https://lkrrhxiwvflxzrildlwn.supabase.co/storage/v1/object/public/coupons/20260331_Miner_JoyfulTogether.png',
-    hasCoupon: 'false',
+    hasCoupon: false,
   },
   {
     id: 2,
@@ -24,7 +24,7 @@ export const couponsMock: CouponCardItem[] = [
     expiredAt: '2026-04-01',
     image:
       'https://lkrrhxiwvflxzrildlwn.supabase.co/storage/v1/object/public/coupons/20260331_UOB_Reword999point.png',
-    hasCoupon: 'false',
+    hasCoupon: false,
   },
   {
     id: 3,
@@ -36,7 +36,7 @@ export const couponsMock: CouponCardItem[] = [
     expiredAt: '2026-04-01',
     image:
       'https://lkrrhxiwvflxzrildlwn.supabase.co/storage/v1/object/public/coupons/20260331_GSB_99BathPerSeat.png',
-    hasCoupon: 'true',
+    hasCoupon: true,
   },
   {
     id: 4,
@@ -48,7 +48,7 @@ export const couponsMock: CouponCardItem[] = [
     expiredAt: '2026-04-01',
     image:
       'https://lkrrhxiwvflxzrildlwn.supabase.co/storage/v1/object/public/coupons/20260331_UOB_Benz1get1.png',
-    hasCoupon: 'true',
+    hasCoupon: true,
   },
   {
     id: 5,
@@ -60,7 +60,7 @@ export const couponsMock: CouponCardItem[] = [
     expiredAt: '2026-04-01',
     image:
       'https://lkrrhxiwvflxzrildlwn.supabase.co/storage/v1/object/public/coupons/20260331_AIS_50point.png',
-    hasCoupon: 'true',
+    hasCoupon: true,
   },
   {
     id: 6,
@@ -72,7 +72,7 @@ export const couponsMock: CouponCardItem[] = [
     expiredAt: '2026-04-01',
     image:
       'https://lkrrhxiwvflxzrildlwn.supabase.co/storage/v1/object/public/coupons/20260331_Miner_JoyfulTogether.png',
-    hasCoupon: 'false',
+    hasCoupon: false,
   },
   {
     id: 7,
@@ -84,7 +84,7 @@ export const couponsMock: CouponCardItem[] = [
     expiredAt: '2026-04-01',
     image:
       'https://lkrrhxiwvflxzrildlwn.supabase.co/storage/v1/object/public/coupons/20260331_UOB_Reword999point.png',
-    hasCoupon: 'false',
+    hasCoupon: false,
   },
   {
     id: 8,
@@ -96,7 +96,7 @@ export const couponsMock: CouponCardItem[] = [
     expiredAt: '2026-04-01',
     image:
       'https://lkrrhxiwvflxzrildlwn.supabase.co/storage/v1/object/public/coupons/20260331_GSB_99BathPerSeat.png',
-    hasCoupon: 'true',
+    hasCoupon: true,
   },
   {
     id: 9,
@@ -108,7 +108,7 @@ export const couponsMock: CouponCardItem[] = [
     expiredAt: '2026-04-01',
     image:
       'https://lkrrhxiwvflxzrildlwn.supabase.co/storage/v1/object/public/coupons/20260331_UOB_Benz1get1.png',
-    hasCoupon: 'true',
+    hasCoupon: true,
   },
   {
     id: 10,
@@ -120,7 +120,7 @@ export const couponsMock: CouponCardItem[] = [
     expiredAt: '2026-04-01',
     image:
       'https://lkrrhxiwvflxzrildlwn.supabase.co/storage/v1/object/public/coupons/20260331_AIS_50point.png',
-    hasCoupon: 'true',
+    hasCoupon: true,
   },
 ]
 

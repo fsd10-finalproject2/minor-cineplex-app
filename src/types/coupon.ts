@@ -7,7 +7,7 @@ export interface CouponCardItem {
   expiredAt: string //Date the coupon expires
   termsAndConditions: string[] //Terms and conditions of the coupon
   image: string
-  hasCoupon: string
+  hasCoupon: boolean
 }
 
 export interface CouponTab {
