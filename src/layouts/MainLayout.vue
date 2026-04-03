@@ -4,6 +4,7 @@
 
     <main class="flex-1">
       <router-view />
+
     </main>
 
     <AppFooter />
@@ -13,4 +14,5 @@
 <script setup lang="ts">
 import AppNavbar from '@/components/common/nav-bar/AppNavbar.vue'
 import AppFooter from '@/components/common/footer/AppFooter.vue'
+
 </script>

@@ -14,6 +14,9 @@ import type { Page } from '@/types/navbarMenu'
 // import LoginPage from '@/views/LoginPage.vue'
 // import RegisterPage from '@/views/RegisterPage.vue'
 import DesignSystem from '@/views/DesignSystem.vue'
+// import SeatBookingView from '@/views/SeatBookingView.vue'
+import CouponsPage from '@/views/CouponsPage.vue'
+import LandingPage from '@/views/LandingPage.vue'
 
 const router = createRouter({
   history: createWebHistory(),
@@ -24,11 +27,23 @@ const router = createRouter({
       children: [
         {
           path: '',
+          component: LandingPage,
+          meta: { requiresAuth: false },
+        },
+        {
+          path: 'design-system',
           component: DesignSystem,
           meta: { requiresAuth: true },
         },
+        {
+          path: 'coupons',
+          name: 'coupons',
+          component: CouponsPage,
+          meta: { requiresAuth: false },
+        },
       ],
     },
+
     // {
     //   path: '/',
     //   component: AuthLayout,
