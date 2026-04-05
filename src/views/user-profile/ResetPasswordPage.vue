@@ -34,39 +34,37 @@ const handleReset = () => {
   <ProfileWrapper title="Reset password">
     <!-- Form Section -->
     <div class="flex flex-col gap-6">
-      
       <!-- New Password -->
-      <BaseInput 
+      <BaseInput
         v-model="newPassword"
         label="New password"
         placeholder="New password"
         type="password"
         :show-left-icon="false"
-        class="w-full md:w-[380px]"
+        class="w-full md:w-95"
       />
 
       <!-- Confirm Password -->
-      <BaseInput 
+      <BaseInput
         v-model="confirmPassword"
         label="Confirm password"
         placeholder="Confirm new password"
         type="password"
         :show-left-icon="false"
-        class="w-full md:w-[380px]"
+        class="w-full md:w-95"
       />
 
       <!-- Action Button -->
       <div class="pt-4">
-        <CustomButton 
-          label="Reset password" 
-          variant="secondary" 
+        <CustomButton
+          label="Reset password"
+          variant="secondary"
           @click="handleReset"
-          class="px-10 py-3" 
+          class="px-10 py-3"
         />
       </div>
     </div>
   </ProfileWrapper>
 </template>
 
-<style scoped>
-</style>
+<style scoped></style>
