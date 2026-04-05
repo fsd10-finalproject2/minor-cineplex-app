@@ -1,22 +1,123 @@
+import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
+import { useRouter } from 'vue-router'
+import { authApi } from '@/services/api/auth.api'
+import { useToast } from '@/composables/useToast'
+import { supabase } from '@/lib/supabase'
+import type { LoginRequest, RegisterRequest } from '@/types/auth'
 
-export const useAuthStore = defineStore('auth', {
-  state: () => ({
-    isLoggedIn: false,
-    user: null as null | { name: string; avatar: string },
-  }),
+export const useAuthStore = defineStore('auth', () => {
+  const { addToast } = useToast()
+  const router = useRouter()
 
-  actions: {
-    login() {
-      this.isLoggedIn = true
-      this.user = {
-        name: 'Bruce Wayne',
-        avatar: 'https://i.pravatar.cc/40?img=8',
-      }
-    },
-    logout() {
-      this.isLoggedIn = false
-      this.user = null
-    },
-  },
+  const user = ref<{ userId: string; email: string; name: string } | null>(null)
+  const isLoggedIn = computed(() => !!user.value)
+  const error = ref<string | null>(null)
+  const loading = ref(false)
+  const forgotLoading = ref(false)
+  const resetLoading = ref(false)
+
+  async function login(data: LoginRequest) {
+    loading.value = true
+    error.value = null
+    try {
+      const res = await authApi.login(data)
+      user.value = { userId: res.userId, email: res.email, name: res.name }
+    } catch (e) {
+      error.value = (e as Error).message
+      throw e
+    } finally {
+      loading.value = false
+    }
+  }
+
+  async function register(data: RegisterRequest) {
+    loading.value = true
+    error.value = null
+    try {
+      await authApi.register(data)
+    } catch (e) {
+      error.value = (e as Error).message
+      throw e
+    } finally {
+      loading.value = false
+    }
+  }
+
+  async function logout() {
+    await authApi.logout()
+    user.value = null
+  }
+
+  async function forgotPassword(email: string) {
+    if (!email) {
+      addToast({
+        title: 'Email required',
+        description: 'Please enter your email first',
+        variant: 'error',
+        position: 'top-right',
+      })
+      return
+    }
+
+    forgotLoading.value = true
+    try {
+      await authApi.forgotPassword({ email })
+      addToast({
+        title: 'Email sent!',
+        description: 'Check your inbox for the reset link',
+        variant: 'success',
+        position: 'top-right',
+      })
+    } catch (e) {
+      addToast({
+        title: 'Failed to send email',
+        description: (e as Error).message || 'Something went wrong',
+        variant: 'error',
+        position: 'top-right',
+      })
+    } finally {
+      forgotLoading.value = false
+    }
+  }
+
+  async function resetPasswordFromEmail(newPassword: string) {
+    resetLoading.value = true
+    try {
+      const { error: supabaseError } = await supabase.auth.updateUser({ password: newPassword })
+      if (supabaseError) throw new Error(supabaseError.message)
+
+      addToast({
+        title: 'Password updated!',
+        description: 'You can now log in with your new password',
+        variant: 'success',
+        position: 'top-right',
+      })
+
+      router.push('/login')
+    } catch (e) {
+      addToast({
+        title: 'Failed to reset password',
+        description: (e as Error).message || 'Something went wrong',
+        variant: 'error',
+        position: 'top-right',
+      })
+    } finally {
+      resetLoading.value = false
+    }
+  }
+
+  return {
+    user,
+    isLoggedIn,
+    error,
+    loading,
+    login,
+    register,
+    logout,
+    forgotLoading,
+    forgotPassword,
+    resetLoading,
+    resetPasswordFromEmail,
+  }
 })
