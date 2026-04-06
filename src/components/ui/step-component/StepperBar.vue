@@ -19,13 +19,14 @@ withDefaults(
 </script>
 
 <template>
-  <div class="flex flex-row md:gap-6 gap-0 transition-all ease-in">
+  <div class="flex flex-row w-full max-w-[375px] md:max-w-none justify-center mx-auto gap-[40px] px-4 md:px-0">
     <StepItem
       v-for="(step, index) in steps"
       :key="index"
       :step="index + 1"
       :status="step.status"
       :label="step.label"
+      :isLast="index === steps.length - 1"
     />
   </div>
 </template>

@@ -12,11 +12,11 @@ import type { Page } from '@/types/navbarMenu'
 import LoginPage from '@/views/auth/LoginPage.vue'
 import RegisterPage from '@/views/auth/RegisterPage.vue'
 import DesignSystem from '@/views/DesignSystem.vue'
-// import SeatBookingView from '@/views/SeatBookingView.vue'
 import CouponsPage from '@/views/CouponsPage.vue'
 import LandingPage from '@/views/LandingPage.vue'
 import ForgetPasswordPage from '@/views/auth/ForgetPasswordPage.vue'
 import ResetPasswordPage from '@/views/user-profile/ResetPasswordPage.vue'
+import SeatBookingView from '@/views/booking/SeatBookingView.vue'
 
 const router = createRouter({
   history: createWebHistory(),
@@ -39,6 +39,11 @@ const router = createRouter({
           name: 'coupons',
           component: CouponsPage,
           meta: { requiresAuth: false },
+        },
+        {
+          path: 'booking',
+          component: SeatBookingView,
+          meta: { requiresAuth: true },
         },
       ],
     },
