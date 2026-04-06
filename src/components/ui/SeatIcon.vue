@@ -55,7 +55,7 @@ const statusConfig = computed(() => {
 
 <template>
   <div 
-    class="relative w-10 h-10 flex items-center justify-center rounded-lg overflow-hidden transition-all duration-300"
+    class="relative w-full h-full aspect-square flex items-center justify-center rounded-[20%] overflow-hidden transition-all duration-300"
     :class="[statusConfig.bg, status === 'selected' ? 'ring-2 ring-white ring-inset' : '']"
   >
     <!-- Seat Visual Silhouette -->
@@ -72,19 +72,19 @@ const statusConfig = computed(() => {
     </svg>
 
     <!-- Center Icon -->
-    <div v-if="statusConfig.hasIcon" :class="statusConfig.iconColor" class="z-10">
+    <div v-if="statusConfig.hasIcon" :class="statusConfig.iconColor" class="z-10 w-1/2 h-1/2 flex items-center justify-center">
       <!-- Booked X -->
-      <svg v-if="statusConfig.icon === 'x'" viewBox="0 0 24 24" class="w-5 h-5 fill-none stroke-current" stroke-width="2">
+      <svg v-if="statusConfig.icon === 'x'" viewBox="0 0 24 24" class="w-full h-full fill-none stroke-current" stroke-width="2">
         <path d="M18 6L6 18M6 6l12 12" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
       
       <!-- Reserved Hourglass -->
-      <svg v-if="statusConfig.icon === 'hourglass'" viewBox="0 0 24 24" class="w-4 h-4 fill-none stroke-current" stroke-width="1.5">
-        <path d="M12 7V12L14.5 13.5M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke-linecap="round" stroke-linejoin="round"/>
+      <svg v-if="statusConfig.icon === 'hourglass'" viewBox="0 0 24 24" class="w-[80%] h-[80%] fill-none stroke-current" stroke-width="1.5">
+        <path d="M5 21h14M5 3h14M7 3v3l5 6 5-6V3M7 21v-3l5-6 5 6v3" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
 
       <!-- Friend Star -->
-      <svg v-if="statusConfig.icon === 'star'" viewBox="0 0 24 24" class="w-5 h-5 fill-none stroke-current" stroke-width="1.5">
+      <svg v-if="statusConfig.icon === 'star'" viewBox="0 0 24 24" class="w-full h-full fill-none stroke-current" stroke-width="1.5">
         <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
     </div>
@@ -92,9 +92,9 @@ const statusConfig = computed(() => {
     <!-- Selected Badge -->
     <div 
       v-if="statusConfig.hasBadge"
-      class="absolute bottom-0 right-0 w-4 h-4 bg-white rounded-full translate-x-1 translate-y-1 flex items-center justify-center border-2 border-[#407BFF]"
+      class="absolute bottom-0 right-0 w-[40%] h-[40%] bg-white rounded-full translate-x-[20%] translate-y-[20%] flex items-center justify-center border-2 border-[#407BFF]"
     >
-      <svg viewBox="0 0 24 24" class="w-3 h-3 fill-none stroke-[#407BFF]" stroke-width="4">
+      <svg viewBox="0 0 24 24" class="w-[70%] h-[70%] fill-none stroke-[#407BFF]" stroke-width="4">
         <path d="M20 6L9 17L4 12" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
     </div>
