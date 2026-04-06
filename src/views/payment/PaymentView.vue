@@ -1,31 +1,13 @@
 <script setup lang="ts">
 import StepperBar from '@/components/ui/step-component/StepperBar.vue'
 import PaymentTabs from './PaymentTabs.vue'
-import BookingSummary from './BookingSummary.vue'
+import MovieDetailCard from '@/components/ui/MovieDetailCard.vue'
 
 const currentSteps = [
   { label: 'Select showtime', status: 'completed' as const },
   { label: 'Select seat', status: 'completed' as const },
   { label: 'Payment', status: 'active' as const },
 ]
-
-// Mock data - replace with real data later
-const movie = {
-  title: 'The Dark Knight',
-  tags: ['Action', 'Crime'],
-  posterEmoji: '🦇',
-}
-
-const booking = {
-  cinema: 'Minor Cineplex Arkham',
-  date: '24 Jun 2024',
-  time: '16:30',
-  theater: 'Hall 1',
-}
-
-const seats = ['C-4', 'C-5']
-const paymentMethod = 'Credit Card'
-const totalPrice = 300
 </script>
 
 <template>
@@ -35,18 +17,28 @@ const totalPrice = 300
     <StepperBar :steps="currentSteps" />
   </section>
   <main>
-    <div class="flex flex-row py-[80px] px-[120px]">
-      <div class="flex flex-2 h-[200px] w-[200px]">
+    <div class="flex flex-row py-[80px] px-[120px] gap-[102px]">
+      <div class="flex-1">
         <PaymentTabs />
-        <BookingSummary
-          :movie="movie"
-          :booking="booking"
-          :seats="seats"
-          :paymentMethod="paymentMethod"
-          :totalPrice="totalPrice"
-        />
       </div>
-      <div class="flex flex-1 h-[200px] w-[200px]"></div>
+      <MovieDetailCard
+        poster-url="https://image.tmdb.org/t/p/w200/qJ2tW6WMUDux911r6m7haRef0WH.jpg"
+        title="The Dark Knight"
+        :tags="['Action', 'Crime']"
+        language="TH"
+        cinema="Minor Cineplex Arkham"
+        date="24 Jun 2024"
+        time="16:30"
+        theater="Theater 1"
+        :selected-seats="['C9', 'C10']"
+        :total="300"
+        :show-timer="true"
+        :show-coupon="true"
+        :show-payment-method="true"
+        payment-method="Credit card"
+        coupon-name="Merry March Magic"
+        :coupon-discount="50"
+      />
     </div>
   </main>
 </template>
