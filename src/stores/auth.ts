@@ -22,7 +22,8 @@ export const useAuthStore = defineStore('auth', () => {
     error.value = null
     try {
       const res = await authApi.login(data)
-      user.value = { userId: res.userId, email: res.email, name: res.name }
+      user.value = { userId: res.userId, email: res.email, name: res.name || '' }
+      localStorage.setItem('access_token', res.accessToken)
     } catch (e) {
       error.value = (e as Error).message
       throw e
@@ -47,6 +48,7 @@ export const useAuthStore = defineStore('auth', () => {
   async function logout() {
     await authApi.logout()
     user.value = null
+    localStorage.removeItem('access_token')
   }
 
   async function forgotPassword(email: string) {
