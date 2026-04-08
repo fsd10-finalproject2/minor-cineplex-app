@@ -10,7 +10,7 @@ export const useAuthStore = defineStore('auth', () => {
   const { addToast } = useToast()
   const router = useRouter()
 
-  const user = ref<{ userId: string; email: string; name?: string } | null>(null)
+  const user = ref<{ userId: string; email: string; name: string } | null>(null)
   const isLoggedIn = computed(() => !!user.value)
   const error = ref<string | null>(null)
   const loading = ref(false)
@@ -110,7 +110,7 @@ export const useAuthStore = defineStore('auth', () => {
   async function me() {
     try {
       const res = await authApi.me()
-      user.value = { userId: res.id, email: res.email, name: res.name }
+      user.value = { userId: res.id, email: res.email, name: res.name ?? '' }
     } catch {
       user.value = null
     }
