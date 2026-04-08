@@ -21,8 +21,8 @@ export const useAuthStore = defineStore('auth', () => {
     loading.value = true
     error.value = null
     try {
-      const res = await authApi.login(data)
-      user.value = { userId: res.userId, email: res.email, name: res.name }
+      await authApi.login(data)
+      await me()
     } catch (e) {
       error.value = (e as Error).message
       throw e
@@ -107,6 +107,15 @@ export const useAuthStore = defineStore('auth', () => {
     }
   }
 
+  async function me() {
+    try {
+      const res = await authApi.me()
+      user.value = { userId: res.id, email: res.email, name: res.name ?? '' }
+    } catch {
+      user.value = null
+    }
+  }
+
   return {
     user,
     isLoggedIn,
@@ -115,6 +124,7 @@ export const useAuthStore = defineStore('auth', () => {
     login,
     register,
     logout,
+    me,
     forgotLoading,
     forgotPassword,
     resetLoading,

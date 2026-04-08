@@ -1,9 +1,10 @@
-import { post } from './http'
+import { post, get } from './http'
 import type {
   AuthResponse,
   LoginRequest,
   RegisterRequest,
   ForgotPasswordRequest,
+  UserProfileResponse,
 } from '@/types/auth'
 
 export const authApi = {
@@ -15,4 +16,6 @@ export const authApi = {
 
   forgotPassword: (data: ForgotPasswordRequest) =>
     post<{ message: string }>('/user/forgot-password', data),
+
+  me: () => get<UserProfileResponse>('/user/me'),
 }

@@ -19,3 +19,10 @@ export interface AuthResponse {
 export interface ForgotPasswordRequest {
   email: string
 }
+
+export interface UserProfileResponse {
+  id: string
+  email: string
+  name: string
+  avatarUrl: string
+}
