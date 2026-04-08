@@ -6,6 +6,7 @@ import { useAuthStore } from '@/stores/auth'
 import { get, post } from '@/services/api/http'
 import StepperBar from '@/components/ui/step-component/StepperBar.vue'
 import SeatIcon from '@/components/ui/SeatIcon.vue'
+import { useToast } from '@/composables/useToast'
 import { CalendarIcon, ClockLineIcon, ShopIcon, PinIcon } from '@/assets/icons'
 import CustomTag from '@/components/ui/CustomTag.vue'
 import { supabase } from '@/lib/supabase'
@@ -13,8 +14,8 @@ import { supabase } from '@/lib/supabase'
 // --- Types ---
 interface Seat {
   id: number
-  row: string
-  col: number
+  rowCode: string
+  colNumber: number
   seatNumber: string
   seatType: string
   theaterId: number
@@ -38,13 +39,14 @@ interface RealtimeSelectionPayload {
   }
 }
 
-// --- Configuration ---
+
 const SHOWTIME_ID = 1  // Mock Showtime ID
 const THEATER_ID = 1   // Mock Theater ID
 
 // --- Setup ---
 const route = useRoute()
 const authStore = useAuthStore()
+const { addToast } = useToast()
 const friendId = route.query.friendId as string | undefined
 
 // --- Progress Steps ---
@@ -64,14 +66,14 @@ const loading = ref(true)
 
 // --- Dynamic Grid Logic ---
 const rowLabels = computed(() => {
-  const uniqRows = [...new Set(seats.value.map(s => s.row))].sort().reverse()
+  const uniqRows = [...new Set(seats.value.map(s => s.rowCode))].sort().reverse()
   return uniqRows
 })
 
-const getSeatsByRow = (row: string) => {
+const getSeatsByRow = (rowCode: string) => {
   return seats.value
-    .filter(s => s.row === row)
-    .sort((a, b) => a.col - b.col)
+    .filter(s => s.rowCode === rowCode)
+    .sort((a, b) => a.colNumber - b.colNumber)
 }
 
 // --- Status Helpers ---
@@ -85,11 +87,14 @@ const getSeatStatus = (seat: Seat) => {
 
 const toggleSeat = async (seat: Seat) => {
   if (bookedSeatIds.value.has(seat.id)) return // Cannot select booked seats
-  if (otherSelections.value.has(seat.id)) return // Cannot select others' holds
+  if (otherSelections.value.has(seat.id)) {
+    addToast({ title: 'Reserved', description: 'This seat is already held by someone else.', variant: 'error' })
+    return
+  }
   if (friendId && friendSelections.value.has(seat.id)) return // Cannot select friend's hold
 
   const isSelected = mySelections.value.has(seat.id)
-  
+
   try {
     if (isSelected) {
       // Optimistic update
@@ -100,11 +105,43 @@ const toggleSeat = async (seat: Seat) => {
       mySelections.value.add(seat.id)
       await post('/api/seats/select', { showtimeId: SHOWTIME_ID, seatId: seat.id })
     }
-  } catch (err) {
+  } catch (e) {
+    const err = e as Error
     console.error('Failed to toggle seat:', err)
+
+    // Check for specific conflict status
+    if (
+      err.message?.toLowerCase().includes('already selected') ||
+      err.message?.toLowerCase().includes('already booked') ||
+      err.message?.includes('409')
+    ) {
+      addToast({ title: 'Locked', description: 'Sorry, someone just grabbed this seat!', variant: 'error' })
+    } else {
+      addToast({ title: 'Error', description: 'Could not update your selection.', variant: 'error' })
+    }
+
     // Revert on failure
     if (isSelected) mySelections.value.add(seat.id)
     else mySelections.value.delete(seat.id)
+
+    // Fallback sync: Refresh other un-synced selections
+    const currentSelections = await get<SeatSelection[]>(`/api/seats/selections/${SHOWTIME_ID}`)
+    const myId = authStore.user?.userId
+    const newOther = new Set<number>()
+    const newFriend = new Set<number>()
+
+    currentSelections.forEach(selection => {
+      if (myId && selection.userId === myId) {
+         // keep ours
+      } else if (friendId && selection.userId === friendId) {
+        newFriend.add(selection.seatId)
+      } else {
+        newOther.add(selection.seatId)
+      }
+    })
+
+    friendSelections.value = newFriend
+    otherSelections.value = newOther
   }
 }
 
@@ -117,10 +154,10 @@ const fetchInitialData = async () => {
 
     // 2. Fetch current active selections from backend
     const currentSelections = await get<SeatSelection[]>(`/api/seats/selections/${SHOWTIME_ID}`)
-    
+
     // Sort selections into My, Friend, Other
     const myId = authStore.user?.userId
-    
+
     mySelections.value.clear()
     friendSelections.value.clear()
     otherSelections.value.clear()
@@ -135,7 +172,7 @@ const fetchInitialData = async () => {
       }
     })
 
-    // 3. For booked seats (Tickets), we keep the Supabase query if there's no backend endpoint yet
+    // 3. For booked seats (Tickets)
     const { data: ticketData, error: ticketError } = await supabase
       .from('tickets')
       .select('*, bookings!inner(showtime_id)')
@@ -155,26 +192,33 @@ const fetchInitialData = async () => {
 let selectionSubscription: RealtimeChannel | null = null
 
 const setupRealtime = () => {
+  console.log('--- Setting up Real-time for seat_selections ---')
   selectionSubscription = supabase
     .channel('public:seat_selections')
     .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'seat_selections' }, (payload) => {
+      console.log('Real-time INSERT event:', payload)
       const { user_id, showtime_id, seat_id } = (payload as unknown as RealtimeSelectionPayload).new
-      
-      if (showtime_id !== SHOWTIME_ID) return
+
+      const parsedShowtime = Number(showtime_id)
+      const parsedSeat = Number(seat_id)
+
+      if (parsedShowtime !== SHOWTIME_ID) return
 
       const myId = authStore.user?.userId
 
       if (myId && user_id === myId) {
-        mySelections.value.add(seat_id)
+        mySelections.value = new Set(mySelections.value).add(parsedSeat)
       } else if (friendId && user_id === friendId) {
-        friendSelections.value.add(seat_id)
+        friendSelections.value = new Set(friendSelections.value).add(parsedSeat)
       } else {
-        otherSelections.value.add(seat_id)
+        otherSelections.value = new Set(otherSelections.value).add(parsedSeat)
       }
     })
-    .on('postgres_changes', { event: 'DELETE', schema: 'public', table: 'seat_selections' }, async () => {
+    .on('postgres_changes', { event: 'DELETE', schema: 'public', table: 'seat_selections' }, async (payload) => {
+       console.log('Real-time DELETE event:', payload)
+       // Refresh list to be accurate
        const currentSelections = await get<SeatSelection[]>(`/api/seats/selections/${SHOWTIME_ID}`)
-       
+
        const myId = authStore.user?.userId
        const newMy = new Set<number>()
        const newFriend = new Set<number>()
@@ -189,12 +233,14 @@ const setupRealtime = () => {
            newOther.add(selection.seatId)
          }
        })
-       
+
        mySelections.value = newMy
        friendSelections.value = newFriend
        otherSelections.value = newOther
     })
-    .subscribe()
+    .subscribe((status) => {
+      console.log('Real-time subscription status:', status)
+    })
 }
 
 onMounted(() => {
