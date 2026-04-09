@@ -32,10 +32,8 @@ export const authService = {
   async me(): Promise<void> {
     try {
       const res = await authApi.me()
-      console.log('me() success:', res)
       currentUser.value = { id: res.id, email: res.email, name: res.name, avatarUrl: res.avatarUrl }
     } catch {
-      console.error('me() failed:')
       currentUser.value = null
     }
   },

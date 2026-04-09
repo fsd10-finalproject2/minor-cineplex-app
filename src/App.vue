@@ -1,9 +1,15 @@
 <script setup lang="ts">
 import { onMounted } from 'vue'
 import { useAuthStore } from '@/stores/auth'
+import ToastContainer from '@/components/ui/toast/ToastContainer.vue'
+import { useErrorHandler, ErrorHandlerKey } from '@/composables/useErrorHandler'
+import { provide } from 'vue'
 
 const authStore = useAuthStore()
-import ToastContainer from '@/components/ui/toast/ToastContainer.vue'
+
+const errorHandler = useErrorHandler()
+provide(ErrorHandlerKey, errorHandler)
+
 onMounted(async () => {
   await authStore.me()
 })
