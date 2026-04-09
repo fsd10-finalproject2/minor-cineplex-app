@@ -47,7 +47,6 @@ export const useAuthStore = defineStore('auth', () => {
   async function logout() {
     await authApi.logout()
     user.value = null
-    localStorage.removeItem('access_token')
   }
 
   async function forgotPassword(email: string) {
