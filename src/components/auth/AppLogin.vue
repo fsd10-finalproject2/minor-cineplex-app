@@ -6,9 +6,11 @@ import BaseInput from '@/components/ui/BaseInput/BaseInput.vue'
 import BaseButton from '@/components/ui/CustomButton.vue'
 import { Checkbox } from '@/components/ui/checkbox'
 import CustomButton from '@/components/ui/CustomButton.vue'
+import { useToast } from '@/composables/useToast'
 
 const router = useRouter()
 const auth = useAuthStore()
+const { addToast } = useToast()
 
 const email = ref('')
 const password = ref('')
@@ -25,15 +27,22 @@ onMounted(() => {
 const login = async () => {
   try {
     await auth.login({ email: email.value, password: password.value })
+
     if (rememberMe.value) {
       localStorage.setItem('rememberedEmail', email.value)
     } else {
       localStorage.removeItem('rememberedEmail')
     }
-    const redirect = router.currentRoute.value.query.redirect as string
-    router.push(redirect || '/')
+
+    const redirect = router.currentRoute.value.query.redirect as string | undefined
+
+    router.push(redirect ? { path: redirect } : '/')
   } catch {
-    // error shown via auth.error
+    addToast({
+      title: "Your password is incorrect or this email doesn't exist",
+      description: 'Please try another password or email',
+      variant: 'error',
+    })
   }
 }
 </script>
@@ -61,13 +70,12 @@ const login = async () => {
         :show-left-icon="false"
         :show-right-icon="false"
         :state="auth.error ? 'error' : 'default'"
-        :help-text="auth.error ?? ''"
         @keyup.enter="login"
       />
     </div>
 
     <div class="flex justify-between items-center">
-      <Checkbox label="Remember" />
+      <Checkbox v-model="rememberMe" label="Remember" />
       <CustomButton
         variant="ghost"
         label="Forget password?"

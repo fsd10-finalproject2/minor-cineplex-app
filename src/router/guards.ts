@@ -2,19 +2,22 @@ import type { Router } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 
 export function setupGuards(router: Router) {
-  router.beforeEach((to, from, next) => {
+  router.beforeEach((to) => {
     const auth = useAuthStore()
 
-    // route requires auth
+    console.log('guard fired', {
+      path: to.fullPath,
+      requiresAuth: to.meta.requiresAuth,
+      isLoggedIn: auth.isLoggedIn,
+      user: auth.user,
+    })
+
     if (to.meta.requiresAuth && !auth.isLoggedIn) {
-      return next('/login')
+      return { path: '/login', query: { redirect: to.fullPath } }
     }
 
-    // prevent logged-in user from going to login/register
     if (to.meta.guestOnly && auth.isLoggedIn) {
-      return next('/')
+      return { path: '/' }
     }
-
-    next()
   })
 }

@@ -1,5 +1,4 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import { useAuthStore } from '@/stores/auth'
 
 // layouts
 import MainLayout from '@/layouts/MainLayout.vue'
@@ -25,57 +24,27 @@ const router = createRouter({
       path: '/',
       component: MainLayout,
       children: [
-        {
-          path: '',
-          component: LandingPage,
-          meta: { requiresAuth: false },
-        },
-        {
-          path: 'design-system',
-          component: DesignSystem,
-        },
-        {
-          path: 'coupons',
-          name: 'coupons',
-          component: CouponsPage,
-          meta: { requiresAuth: false },
-        },
-        {
-          path: 'booking',
-          component: SeatBookingView,
-          meta: { requiresAuth: false },
-        },
+        { path: '', component: LandingPage },
+        { path: 'design-system', component: DesignSystem },
+        { path: 'coupons', name: 'coupons', component: CouponsPage },
+        { path: 'booking', component: SeatBookingView, meta: { requiresAuth: true } },
       ],
     },
     {
       path: '/',
       component: AuthLayout,
       children: [
-        {
-          path: 'login',
-          component: LoginPage,
-          meta: { guestOnly: true },
-        },
-        {
-          path: 'register',
-          component: RegisterPage,
-          meta: { guestOnly: true },
-        },
-        {
-          path: 'forgot-password',
-          component: ForgetPasswordPage,
-          meta: { guestOnly: true },
-        },
-        {
-          path: 'auth-reset-password',
-          component: ResetPasswordPage,
-        },
+        { path: 'login', component: LoginPage, meta: { guestOnly: true } },
+        { path: 'register', component: RegisterPage, meta: { guestOnly: true } },
+        { path: 'forgot-password', component: ForgetPasswordPage, meta: { guestOnly: true } },
+        { path: 'auth-reset-password', component: ResetPasswordPage },
       ],
     },
     {
       path: '/account',
       redirect: '/account/booking-history',
       component: UserProfileLayout,
+      meta: { requiresAuth: true },
       children: [
         {
           path: 'booking-history',
@@ -100,23 +69,6 @@ const router = createRouter({
       ],
     },
   ],
-})
-
-router.beforeEach((to, _from) => {
-  const auth = useAuthStore()
-
-  // redirect to login if requires auth and not logged in
-  if (to.meta.requiresAuth && !auth.isLoggedIn) {
-    return {
-      path: '/login',
-      query: { redirect: to.fullPath },
-    }
-  }
-
-  // redirect to home if already logged in and tries to access guest only pages
-  if (to.meta.guestOnly && auth.isLoggedIn) {
-    return { path: '/' }
-  }
 })
 
 export default router

@@ -13,9 +13,6 @@ const props = withDefaults(defineProps<BaseInputProps>(), {
   helpText: '',
   type: 'text',
 })
-
-const emit = defineEmits<BaseInputEmits>()
-
 const isFocused = ref(false)
 const isDisabled = computed(() => props.state === 'disable')
 const isError = computed(() => props.state === 'error')
@@ -93,6 +90,12 @@ const leftIconClasses = computed(() => {
   return [base, isDisabled.value ? styles.disabled : isError.value ? styles.error : styles.default]
 })
 
+const emit = defineEmits<
+  BaseInputEmits & {
+    (e: 'blur'): void
+  }
+>()
+
 function onInput(event: Event) {
   const target = event.target as HTMLInputElement
   emit('update:modelValue', target.value)
@@ -105,7 +108,7 @@ function onClear() {
 </script>
 
 <template>
-  <div class="flex flex-col gap-[4px]">
+  <div class="flex flex-col gap-1">
     <!--Label-->
     <label v-if="label" :class="labelClasses">
       {{ label }}
@@ -125,7 +128,10 @@ function onClear() {
         :type="type"
         @input="onInput"
         @focus="isFocused = true"
-        @blur="isFocused = false"
+        @blur="
+          isFocused = false,
+          emit('blur')
+        "
       />
       <!--Right Icon show when has value and not disabled-->
       <button

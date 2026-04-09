@@ -1,7 +1,9 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import AppRegister from '@/components/auth/AppRegister.vue'
+</script>
 
 <template>
-  <div class="p-10">
-    <h1 class="text-white">Register Page</h1>
+  <div class="flex justify-center items-center py-48.5">
+    <AppRegister />
   </div>
 </template>

@@ -1,14 +1,14 @@
 import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
-import { useRouter } from 'vue-router'
 import { authApi } from '@/services/api/auth.api'
 import { useToast } from '@/composables/useToast'
 import { supabase } from '@/lib/supabase'
 import type { LoginRequest, RegisterRequest } from '@/types/auth'
+import router from '@/router'
 
 export const useAuthStore = defineStore('auth', () => {
   const { addToast } = useToast()
-  const router = useRouter()
+
 
   const user = ref<{ userId: string; email: string; name: string } | null>(null)
   const isLoggedIn = computed(() => !!user.value)
