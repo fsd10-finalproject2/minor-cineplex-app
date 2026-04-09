@@ -43,7 +43,7 @@ const router = createRouter({
         {
           path: 'booking',
           component: SeatBookingView,
-          meta: { requiresAuth: true },
+          meta: { requiresAuth: false },
         },
       ],
     },
