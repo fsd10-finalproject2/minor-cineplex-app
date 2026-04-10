@@ -19,4 +19,5 @@ export interface CouponResponseItem {
   isActive?: boolean | null
   redemptionStartAt?: string | null
   redemptionExpiresAt?: string | null
+  hasCoupon?: boolean | null
 }

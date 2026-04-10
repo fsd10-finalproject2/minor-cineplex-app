@@ -8,6 +8,14 @@ import { Checkbox } from '@/components/ui/checkbox'
 import CustomButton from '@/components/ui/CustomButton.vue'
 import { useToast } from '@/composables/useToast'
 
+const props = withDefaults(
+  defineProps<{
+    /** When true, do not navigate after login (e.g. embedded in a modal). */
+    suppressRedirectAfterLogin?: boolean
+  }>(),
+  { suppressRedirectAfterLogin: false},
+)
+
 const router = useRouter()
 const auth = useAuthStore()
 const { addToast } = useToast()
@@ -32,6 +40,11 @@ const login = async () => {
       localStorage.setItem('rememberedEmail', email.value)
     } else {
       localStorage.removeItem('rememberedEmail')
+    }
+
+    // TODO: add logic to redirect to the page where the user was trying to access before login
+    if (props.suppressRedirectAfterLogin) {
+      return
     }
 
     const redirect = router.currentRoute.value.query.redirect as string | undefined

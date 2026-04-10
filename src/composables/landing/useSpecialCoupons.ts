@@ -18,6 +18,10 @@ function mapCouponResponseToCardItem(item: CouponResponseItem): CouponCardItem {
   const termsAndConditions = rawTerms
     ? rawTerms.split(/\r?\n/).map((line) => line.trim()).filter(Boolean)
     : []
+  const hasCoupon =
+    typeof (item as { hasCoupon?: unknown }).hasCoupon === 'boolean'
+      ? ((item as { hasCoupon?: boolean }).hasCoupon ?? false)
+      : false
 
   return {
     id: item.id,
@@ -29,7 +33,7 @@ function mapCouponResponseToCardItem(item: CouponResponseItem): CouponCardItem {
     redemptionExpiresAt: item.redemptionExpiresAt ?? '-',
     termsAndConditions,
     image: item.couponsImgUrl ?? '',
-    hasCoupon: false,
+    hasCoupon,
   }
 }
 
