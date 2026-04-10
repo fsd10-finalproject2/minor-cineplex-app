@@ -93,8 +93,8 @@ const cardShellClass =
               {{ coupon.title }}
             </h4>
             <div class="flex flex-row gap-1 sm:gap-4 items-center">
-              <p class="style-body-2-regular text-gray-300">Valid until</p>
-              <p class="style-body-2 text-gray-400">{{ expiredAtDisplay }}</p>
+              <p class="style-body-3-regular text-gray-300">Valid until</p>
+              <p class="style-body-3 text-gray-400">{{ expiredAtDisplay }}</p>
             </div>
           </div>
           <!-- Button -->

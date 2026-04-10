@@ -11,6 +11,8 @@ export interface UseSpecialCouponsOptions {
   pageSize?: number
   /** เมื่อส่งมา จะดึงตามหน้านี้และอัปเดต `totalPages` จาก API เมื่อเปลี่ยนหน้า */
   currentPage?: Ref<number>
+  /** ชื่อ partner สำหรับส่งเป็น query `partnerName` — ถ้าไม่ส่ง/ว่าง = ไม่กรอง */
+  partnerName?: Ref<string | undefined>
 }
 
 function mapCouponResponseToCardItem(item: CouponResponseItem): CouponCardItem {
@@ -40,6 +42,7 @@ function mapCouponResponseToCardItem(item: CouponResponseItem): CouponCardItem {
 export function useSpecialCoupons(options?: UseSpecialCouponsOptions) {
   const pageSize = options?.pageSize ?? SPECIAL_COUPONS_PAGE_SIZE
   const currentPageRef = options?.currentPage
+  const partnerNameRef = options?.partnerName
 
   const isLoading = ref(true)
   const specialCoupons = ref<CouponCardItem[]>([])
@@ -54,12 +57,16 @@ export function useSpecialCoupons(options?: UseSpecialCouponsOptions) {
 
   async function load() {
     const pageNum = currentPageRef?.value ?? 1
+    const partnerName = partnerNameRef?.value?.trim()
     isLoading.value = true
     try {
       const params = new URLSearchParams({
         page: String(pageNum),
         limitItems: String(pageSize),
       })
+      if (partnerName) {
+        params.append('partnerName', partnerName)
+      }
       const response = await get<CouponPageResponse>(`/promotions?${params.toString()}`)
       specialCoupons.value = (response.data ?? []).map(mapCouponResponseToCardItem)
 
@@ -81,7 +88,11 @@ export function useSpecialCoupons(options?: UseSpecialCouponsOptions) {
     }
   }
 
-  if (currentPageRef) {
+  if (currentPageRef && partnerNameRef) {
+    watch([currentPageRef, partnerNameRef], () => {
+      void load()
+    }, { immediate: true })
+  } else if (currentPageRef) {
     watch(
       currentPageRef,
       () => {
@@ -89,6 +100,12 @@ export function useSpecialCoupons(options?: UseSpecialCouponsOptions) {
       },
       { immediate: true },
     )
+  } else if (partnerNameRef) {
+    watch(partnerNameRef, () => {
+      void load()
+    }, { immediate: true })
+  } else {
+    void load()
   }
 
   return {
