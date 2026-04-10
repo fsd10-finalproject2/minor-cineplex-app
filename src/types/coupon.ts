@@ -1,10 +1,14 @@
+/** UI model aligned with `CouponResponse` in docs/api-coupons-promotions.md */
 export interface CouponCardItem {
   id: number
   title: string
   description: string
-  SalesPeriod: string //Period of time the coupon is available for sale
-  RedemptionPeriod: string //Period of time the coupon is available for redemption
-  expiredAt: string //Date the coupon expires
+  /** ISO datetime from API (`startDate`) */
+  startDate: string
+  /** ISO datetime from API (`expiresAt`) — e.g. “Valid until” on the card */
+  expiresAt: string
+  redemptionStartAt: string
+  redemptionExpiresAt: string
   termsAndConditions: string[] //Terms and conditions of the coupon
   image: string
   hasCoupon: boolean

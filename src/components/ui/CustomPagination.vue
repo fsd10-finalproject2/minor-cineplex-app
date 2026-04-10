@@ -69,7 +69,7 @@ const changePage = (page: number | string) => {
     </div>
 
     <!-- The Number Pill (Stable Width & Ultra-Responsive) -->
-    <div class="flex items-center justify-center bg-gray-0 rounded-lg px-1 md:px-1.5 py-1 gap-0.5 md:gap-1.5 border border-gray-400/10 shadow-inner min-w-[240px] md:min-w-[540px]">
+    <div class="flex items-center justify-center bg-gray-0 rounded-lg px-1 md:px-1.5 py-1 gap-0.5 md:gap-1.5 border border-gray-400/10 shadow-inner min-w-[240px] md:min-w-[240px]">
       <template v-for="(page, index) in pages" :key="index">
         <!-- Ellipsis -->
         <div

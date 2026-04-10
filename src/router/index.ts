@@ -27,7 +27,7 @@ const router = createRouter({
         { path: '', component: LandingPage },
         { path: 'design-system', component: DesignSystem },
         { path: 'coupons', name: 'coupons', component: CouponsPage },
-        { path: 'booking', component: SeatBookingView, meta: { requiresAuth: true } },
+        { path: 'booking', component: SeatBookingView, meta: { requiresAuth: false } },
       ],
     },
     {

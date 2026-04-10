@@ -1,18 +1,46 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-import CustomButton from '@/components/ui/CustomButton.vue'
 import type { CouponCardItem } from '@/types/coupon'
 import AppLoader from '@/components/ui/AppLoader.vue'
 import CouponCodeModal from '@/components/coupon/CouponCodeModal.vue'
+import UIModal from '@/components/ui/modal/Modal.vue'
+import AppLogin from '@/components/auth/AppLogin.vue'
+import CouponActionButton from '@/components/coupon/CouponActionButton.vue'
 import { useFlipCard } from '@/composables/coupon/useFlipCard'
-
+import { useCouponClaim } from '@/composables/coupon/useCouponClaim'
+import { formatDisplayDate } from '@/utils/formatDate'
+import { useAuthStore } from '@/stores/auth'
+const auth = useAuthStore()
+const isLoggedIn = computed(() => auth.isLoggedIn)
 const props = defineProps<{
   coupon: CouponCardItem
 }>()
 
-const isCouponCodeModalOpen = ref(false)
+const expiredAtDisplay = computed(() => formatDisplayDate(props.coupon.expiresAt))
 
-const isGetCoupon = computed(() => props.coupon.hasCoupon)
+const isCouponCodeModalOpen = ref(false)
+const isLoginModalOpen = ref(false)
+
+const emit = defineEmits<{
+  'refresh-coupons': []
+}>()
+
+const { isSavingCoupon, isGetCoupon, onGetCouponClick, markCouponAsClaimed } = useCouponClaim({
+  couponId: computed(() => props.coupon.id),
+  initialHasCoupon: computed(() => props.coupon.hasCoupon),
+  isLoggedIn,
+  onRequireLogin: () => {
+    isLoginModalOpen.value = true
+  },
+  onLoginHandled: () => {
+    if (isLoginModalOpen.value) {
+      isLoginModalOpen.value = false
+    }
+  },
+  onClaimSuccess: () => {
+    emit('refresh-coupons')
+  },
+})
 
 function openCouponCodeModal() {
   isCouponCodeModalOpen.value = true
@@ -25,6 +53,11 @@ const { isFlipped, onCardClick, onFlipTransitionEnd, resetFlip } = useFlipCard(
 
 function onModalAfterLeave() {
   resetFlip()
+}
+
+function onCouponClaimedFromModal() {
+  markCouponAsClaimed()
+  emit('refresh-coupons')
 }
 
 const cardShellClass =
@@ -49,7 +82,7 @@ const cardShellClass =
         cardShellClass,
         'absolute inset-0 backface-hidden transform-[rotateY(0deg)]',
       ]">
-        <img :src="coupon.image" :alt="coupon.title" class="sm:w-[285px] sm:h-[285px] w-[161px] h-[161px] object-cover shrink-0
+        <img :src="coupon.image" :alt="coupon.title" loading="lazy" class="sm:w-[285px] sm:h-[285px] w-[161px] h-[161px] object-cover shrink-0
             transition-transform duration-500 ease-out
             motion-reduce:transition-none motion-reduce:duration-0
             group-hover:scale-[1.04]
@@ -60,18 +93,19 @@ const cardShellClass =
               {{ coupon.title }}
             </h4>
             <div class="flex flex-row gap-1 sm:gap-4 items-center">
-              <p class="style-body-2-regular text-gray-300">Valid until</p>
-              <p class="style-body-2 text-gray-400">{{ coupon.expiredAt }}</p>
+              <p class="style-body-3-regular text-gray-300">Valid until</p>
+              <p class="style-body-3 text-gray-400">{{ expiredAtDisplay }}</p>
             </div>
           </div>
           <!-- Button -->
           <div class="flex justify-center">
-            <CustomButton v-if="isGetCoupon" variant="secondary" class="w-full h-[48px]" type="button">
-              View details
-            </CustomButton>
-            <CustomButton v-else variant="primary" class="w-full h-[48px]" type="button">
-              Get coupon
-            </CustomButton>
+            <CouponActionButton
+              :is-get-coupon="isGetCoupon"
+              :is-logged-in="isLoggedIn"
+              :is-saving-coupon="isSavingCoupon"
+              button-class="w-full h-[48px]"
+              @click-get-coupon="onGetCouponClick"
+            />
           </div>
         </div>
       </article>
@@ -92,6 +126,19 @@ const cardShellClass =
     </div>
   </section>
 
-  <CouponCodeModal v-model="isCouponCodeModalOpen" :coupon="coupon" @afterLeave="onModalAfterLeave" />
+  <CouponCodeModal
+    v-model="isCouponCodeModalOpen"
+    :coupon="coupon"
+    @afterLeave="onModalAfterLeave"
+    @claimed="onCouponClaimedFromModal"
+  />
+
+  <UIModal v-model="isLoginModalOpen" size="lg" title="" class="flex justify-center items-center">
+      <div
+    class="flex w-full flex-col items-center justify-center py-auto min-h-[min(70vh,28rem)]"
+  >
+    <AppLogin suppress-redirect-after-login hide-headline class="w-full max-w-[385px]" />
+  </div>
+  </UIModal>
 
 </template>
