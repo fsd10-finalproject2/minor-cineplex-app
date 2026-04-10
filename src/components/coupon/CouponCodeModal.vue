@@ -5,7 +5,7 @@ import CustomButton from '@/components/ui/CustomButton.vue'
 import XIcon from '@/assets/icons/XIcon.vue'
 import ChevronDownIcon from '@/assets/icons/ChevronDownIcon.vue'
 import { useCouponCodeModal } from '@/composables/coupon/useCouponCodeModal'
-
+import { formatDisplayDate } from '@/utils/formatDate'
 const props = defineProps<{
   modelValue: boolean
   coupon: CouponCardItem
@@ -18,7 +18,18 @@ const emit = defineEmits<{
 
 const isGetCoupon = computed(() => props.coupon.hasCoupon)
 const modalTitleId = useId()
+const salesPeriodDisplay = computed(() => {
+  const startDate = formatDisplayDate(props.coupon.startDate);
+  const endDate = formatDisplayDate(props.coupon.expiresAt);
+  return `${startDate} - ${endDate}`;
+});
+const redemptionPeriodDisplay = computed(() => {
+  const startDate = formatDisplayDate(props.coupon.redemptionStartAt);
+  const endDate = formatDisplayDate(props.coupon.redemptionExpiresAt);
+  return `${startDate} - ${endDate}`;
+})
 
+const validUntilDisplay = computed(() => formatDisplayDate(props.coupon.expiresAt))
 function requestClose() {
   emit('update:modelValue', false)
 }
@@ -102,7 +113,7 @@ const { modalPanelRef, modalSheetRef, modalBackdropRef, showScrollDownHint, smoo
                   </h2>
                   <div class="flex flex-row gap-6 lg:gap-4 items-center">
                     <p class="style-body-2-regular text-gray-300 text-start w-fit">Valid until</p>
-                    <p class="style-body-2 text-white">{{ coupon.expiredAt }}</p>
+                    <p class="style-body-2 text-white">{{ validUntilDisplay }}</p>
                   </div>
                 </div>
 
@@ -121,10 +132,10 @@ const { modalPanelRef, modalSheetRef, modalBackdropRef, showScrollDownHint, smoo
                 <div class="flex flex-col justify-start items-start gap-0">
                   <p class="style-body-2-regular text-gray-400 text-start">{{ coupon.description }}</p>
                   <p class="style-body-2-regular text-gray-400 text-start">
-                    📅 Sales Period: {{ coupon.SalesPeriod }}
+                    📅 Sales Period: {{ salesPeriodDisplay }}
                   </p>
                   <p class="style-body-2-regular text-gray-400 text-start">
-                    🎟 Redemption Period: {{ coupon.RedemptionPeriod }}
+                    🎟 Redemption Period: {{ redemptionPeriodDisplay }}
                   </p>
                 </div>
 

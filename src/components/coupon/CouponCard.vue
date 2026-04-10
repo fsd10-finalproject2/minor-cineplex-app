@@ -5,11 +5,16 @@ import type { CouponCardItem } from '@/types/coupon'
 import AppLoader from '@/components/ui/AppLoader.vue'
 import CouponCodeModal from '@/components/coupon/CouponCodeModal.vue'
 import { useFlipCard } from '@/composables/coupon/useFlipCard'
+import { formatDisplayDate } from '@/utils/formatDate'
 
 const props = defineProps<{
   coupon: CouponCardItem
 }>()
 
+const expiredAtDisplay = computed(() => formatDisplayDate(props.coupon.expiresAt))
+
+// const auth = useAuthStore()
+// const isLoggedIn = computed(() => auth.isLoggedIn)
 const isCouponCodeModalOpen = ref(false)
 
 const isGetCoupon = computed(() => props.coupon.hasCoupon)
@@ -49,7 +54,7 @@ const cardShellClass =
         cardShellClass,
         'absolute inset-0 backface-hidden transform-[rotateY(0deg)]',
       ]">
-        <img :src="coupon.image" :alt="coupon.title" class="sm:w-[285px] sm:h-[285px] w-[161px] h-[161px] object-cover shrink-0
+        <img :src="coupon.image" :alt="coupon.title" loading="lazy" class="sm:w-[285px] sm:h-[285px] w-[161px] h-[161px] object-cover shrink-0
             transition-transform duration-500 ease-out
             motion-reduce:transition-none motion-reduce:duration-0
             group-hover:scale-[1.04]
@@ -61,7 +66,7 @@ const cardShellClass =
             </h4>
             <div class="flex flex-row gap-1 sm:gap-4 items-center">
               <p class="style-body-2-regular text-gray-300">Valid until</p>
-              <p class="style-body-2 text-gray-400">{{ coupon.expiredAt }}</p>
+              <p class="style-body-2 text-gray-400">{{ expiredAtDisplay }}</p>
             </div>
           </div>
           <!-- Button -->
