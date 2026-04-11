@@ -8,6 +8,7 @@ import { ErrorHandlerKey, type ErrorHandlerReturn } from '@/composables/useError
 import BaseInput from '@/components/ui/BaseInput/BaseInput.vue'
 import BaseButton from '@/components/ui/CustomButton.vue'
 import CustomButton from '@/components/ui/CustomButton.vue'
+import { DoneIcon } from '@/assets/icons'
 
 const router = useRouter()
 const auth = useAuthStore()
@@ -19,6 +20,7 @@ const name = ref('')
 const errorHandler = inject<ErrorHandlerReturn | null>(ErrorHandlerKey, null)
 const form = useFormErrors()
 
+const isSuccess = ref(false)
 
 const touched = ref({
   name: false,
@@ -26,13 +28,11 @@ const touched = ref({
   password: false,
 })
 
-
 const localErrors = ref<Record<'name' | 'email' | 'password', string | null>>({
   name: null,
   email: null,
   password: null,
 })
-
 
 const asyncErrors = ref<{ email: string | null }>({
   email: null,
@@ -42,9 +42,7 @@ const checking = ref({
   email: false,
 })
 
-
 let emailTimer: ReturnType<typeof setTimeout> | null = null
-
 
 // validation logic
 function validateField(field: 'name' | 'email' | 'password', value: string): string | null {
@@ -88,7 +86,6 @@ async function validateEmailAsync(emailValue: string) {
   }
 }
 
-
 // blur handler
 function onBlur(field: 'name' | 'email' | 'password') {
   touched.value[field] = true
@@ -97,7 +94,6 @@ function onBlur(field: 'name' | 'email' | 'password') {
 
   localErrors.value[field] = validateField(field, value)
 }
-
 
 // realtime validation
 watch(name, (val) => {
@@ -163,8 +159,7 @@ const register = async () => {
       name: name.value,
     })
 
-    const redirect = router.currentRoute.value.query.redirect as string
-    router.push(redirect || '/login')
+    isSuccess.value = true
   } catch (err) {
     form.setFromResponse(err)
 
@@ -176,7 +171,22 @@ const register = async () => {
 </script>
 
 <template>
-  <div class="w-full max-w-95 flex flex-col gap-10">
+  <!-- Success State -->
+  <div v-if="isSuccess" class="w-full max-w-95 flex flex-col gap-10 text-center">
+    <div class="flex flex-col items-center gap-4">
+      <div class=""><DoneIcon /></div>
+      <h1 class="text-white style-headline-2">Registration Successful</h1>
+      <p class="style-body-2-regular text-gray-300">Your account has been created</p>
+    </div>
+    <CustomButton
+      variant="primary"
+      label="Go to Login"
+      class="w-full py-3"
+      @click="router.push('/login')"
+    />
+  </div>
+
+  <div v-else class="w-full max-w-95 flex flex-col gap-10">
     <!-- Title -->
     <div class="text-center style-headline-2">
       <h1 class="text-white">Register</h1>
