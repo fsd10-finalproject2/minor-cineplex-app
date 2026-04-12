@@ -17,7 +17,8 @@ api.interceptors.response.use(
   },
 )
 
-export const get = <T>(path: string) => api.get<T>(path).then((r) => r.data)
+export const get = <T>(path: string, config?: Parameters<typeof api.get>[1]) =>
+  api.get<T>(path, config).then((r) => r.data)
 export const post = <T>(path: string, body: unknown) => api.post<T>(path, body).then((r) => r.data)
 export const put = <T>(path: string, body: unknown) => api.put<T>(path, body).then((r) => r.data)
 export const del = <T>(path: string) => api.delete<T>(path).then((r) => r.data)
