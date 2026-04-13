@@ -16,17 +16,17 @@ defineProps<{
     </div>
 
     <!-- Content -->
-    <div class="flex flex-col gap-1 overflow-hidden">
-      <span class="style-headline-3 text-white truncate">
+    <div class="flex flex-col gap-1 overflow-hidden py-1">
+      <h3 class="style-headline-3 text-white line-clamp-2 leading-tight">
         {{ name }}
-      </span>
+      </h3>
 
-      <div class="flex items-center gap-2 style-body-2-regular text-gray-400 truncate">
-        <template v-if="distance">
-          <span class="text-white">{{ distance }}</span>
-          <div class="w-0.5 h-4 bg-gray-300"></div>
-        </template>
-        <p class="truncate opacity-70">{{ address }}</p>
+      <div class="flex flex-col sm:flex-row sm:items-center gap-x-2 style-body-2-regular text-gray-400">
+        <div v-if="distance" class="flex items-center gap-2">
+          <span class="text-white shrink-0">{{ distance }}</span>
+          <div class="hidden sm:block w-0.5 h-4 bg-gray-300"></div>
+        </div>
+        <p class="line-clamp-2 opacity-70">{{ address }}</p>
       </div>
     </div>
   </button>
