@@ -1,10 +1,8 @@
-//wait for auth page
-
 import { createRouter, createWebHistory } from 'vue-router'
 
 // layouts
 import MainLayout from '@/layouts/MainLayout.vue'
-//import AuthLayout from '@/layouts/AuthLayout.vue'
+import AuthLayout from '@/layouts/AuthLayout.vue'
 import UserProfileLayout from '@/layouts/UserProfileLayout.vue'
 
 import type { Page } from '@/types/navbarMenu'
@@ -33,24 +31,24 @@ const router = createRouter({
           component: () => import('@/views/payment/PaymentView.vue'),
           meta: { requiresAuth: true },
         },
+        {
+          path: 'payment/success',
+          component: () => import('@/views/payment/PaymentSuccessView.vue'),
+          meta: { requiresAuth: true },
+        },
       ],
     },
-    // {
-    //   path: '/',
-    //   component: AuthLayout,
-    //   children: [
-    //     {
-    //       path: 'login',
-    //       component: LoginPage,
-    //       meta: { guestOnly: true },
-    //     },
-    //     {
-    //       path: 'register',
-    //       component: RegisterPage,
-    //       meta: { guestOnly: true },
-    //     },
-    //   ],
-    // },
+    {
+      path: '/',
+      component: AuthLayout,
+      children: [
+        {
+          path: 'login',
+          component: () => import('@/views/auth/LoginPage.vue'),
+          meta: { guestOnly: true },
+        },
+      ],
+    },
     {
       path: '/account',
       redirect: '/account/booking-history',

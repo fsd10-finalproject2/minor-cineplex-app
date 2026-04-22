@@ -26,3 +26,23 @@ export interface OrderSummaryProps {
   totalPrice: number
   countdownSeconds?: number
 }
+
+export interface PaymentIntentData {
+  clientSecret: string
+  bookingId: number
+  amount: number
+  discountAmount: number
+  finalAmount: number
+  currency: string
+}
+
+export interface BookingResult {
+  bookingId: number
+  movieTitle: string
+  cinemaName: string
+  hallName: string
+  startTime: string
+  seatNumbers: string[]
+  totalPrice: number
+  status: string
+}
