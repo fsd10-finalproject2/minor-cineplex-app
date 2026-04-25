@@ -14,7 +14,6 @@ const router = useRouter()
 const bookingStore = useBookingStore()
 const { addToast } = useToast()
 const {
-  status: paymentStatus,
   error: paymentError,
   paymentIntent,
   createPaymentIntent,
@@ -93,14 +92,15 @@ async function handleConfirmPayment() {
   isProcessing.value = true
 
   try {
-    // Step 1: Create payment intent on backend
-    // In real app, use actual showtime ID and seat IDs from the store
-    const showtimeId = 1 // Mock - should come from bookingStore
-    const seatIds = [1, 2] // Mock - should come from bookingStore
+    // Validate booking data before payment
+    if (!bookingStore.showtimeId || bookingStore.seatIds.length === 0) {
+      throw new Error('Invalid booking data. Please select seats first.')
+    }
 
+    // Step 1: Create payment intent on backend
     const intentResponse = await createPaymentIntent(
-      showtimeId,
-      seatIds,
+      bookingStore.showtimeId,
+      bookingStore.seatIds,
       selectedCoupon.value?.id || null,
     )
 
@@ -189,6 +189,19 @@ function handleDiscountUpdate(amount: number) {
 function handleFinalTotalUpdate(total: number) {
   finalTotal.value = total
 }
+
+// TODO: Re-enable validation before production
+// Validate booking data on mount
+// onMounted(() => {
+//   if (!bookingStore.showtimeId || bookingStore.seatIds.length === 0) {
+//     addToast({
+//       title: 'No booking found',
+//       description: 'Please select a showtime and seats first',
+//       variant: 'error',
+//     })
+//     router.push('/booking')
+//   }
+// })
 </script>
 
 <template>

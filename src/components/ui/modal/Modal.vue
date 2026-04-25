@@ -5,7 +5,7 @@ export default {
 </script>
 
 <script setup lang="ts">
-import { computed, onUnmounted, useId, useSlots, watch } from '@vue/runtime-core'
+import { computed, onUnmounted, useId, useSlots, watch } from 'vue'
 import CustomButton from '../CustomButton.vue'
 import XIcon from '@/assets/icons/XIcon.vue'
 
