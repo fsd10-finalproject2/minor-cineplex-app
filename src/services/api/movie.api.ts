@@ -6,6 +6,8 @@ export interface MovieSearchParams {
   genre?: string
   city?: string
   releaseDate?: string
+  wheelchairAccess?: boolean
+  hearingAssistance?: boolean
 }
 
 export interface Movie {

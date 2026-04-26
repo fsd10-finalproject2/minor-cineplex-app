@@ -4,14 +4,42 @@ import CinemaCard from '@/components/ui/CinemaCard.vue'
 import { DoneIcon } from '@/assets/icons'
 import { cinemaApi, type CinemaResponse } from '@/services/api/cinema.api'
 import { useGeolocation } from '@vueuse/core'
+import { useToast } from '@/composables/useToast'
 
-const { coords, resume, pause } = useGeolocation()
+const { toasts, addToast, removeToast } = useToast()
+const { coords, resume, pause, error: geoError } = useGeolocation()
 const cinemas = ref<CinemaResponse[]>([])
 const isLoading = ref(false)
 const viewMode = ref<'city' | 'nearest'>('nearest')
 
+const TRIGGERED_TITLES = {
+  DB_ERROR: 'Unable to Load Nearby Cinemas',
+  LOCATION_DENIED: 'Location Access Denied',
+  NO_NEARBY: 'No Nearby Cinemas Found'
+}
+
+const clearToastByTitle = (title: string) => {
+  const toast = toasts.value.find(t => t.title === title)
+  if (toast) removeToast(toast.id)
+}
+
+const showPersistentError = (title: string, description: string) => {
+  if (toasts.value.some(t => t.title === title)) return
+  addToast({
+    title,
+    description,
+    variant: 'error',
+    position: 'bottom-center',
+    duration: 0
+  })
+}
+
 const fetchCinemas = async () => {
   isLoading.value = true
+  // Clear existing errors when starting a fresh fetch
+  clearToastByTitle(TRIGGERED_TITLES.DB_ERROR)
+  clearToastByTitle(TRIGGERED_TITLES.NO_NEARBY)
+  
   try {
     const lat = viewMode.value === 'nearest' ? coords.value.latitude : undefined
     const lng = viewMode.value === 'nearest' ? coords.value.longitude : undefined
@@ -22,8 +50,19 @@ const fetchCinemas = async () => {
       lng === Infinity ? undefined : lng
     )
     cinemas.value = items
+
+    if (viewMode.value === 'nearest' && items.length === 0) {
+      showPersistentError(
+        TRIGGERED_TITLES.NO_NEARBY,
+        "We couldn't find any cinemas near your location. Try searching in another area."
+      )
+    }
   } catch (error) {
     console.error('Failed to fetch cinemas:', error)
+    showPersistentError(
+      TRIGGERED_TITLES.DB_ERROR,
+      'Something went wrong while retrieving nearby cinemas. Please refresh or try again later.'
+    )
   } finally {
     isLoading.value = false
   }
@@ -49,10 +88,30 @@ const cities = computed(() => {
 watch(viewMode, (newMode) => {
   if (newMode === 'nearest') {
     resume()
+    if (geoError.value) {
+      showPersistentError(
+        TRIGGERED_TITLES.LOCATION_DENIED,
+        'Please enable location permissions in your browser settings and try again'
+      )
+    }
   } else {
     pause()
+    // Clear location and no nearby errors when switching to city view
+    clearToastByTitle(TRIGGERED_TITLES.LOCATION_DENIED)
+    clearToastByTitle(TRIGGERED_TITLES.NO_NEARBY)
   }
   fetchCinemas()
+})
+
+watch(geoError, (newError) => {
+  if (newError && viewMode.value === 'nearest') {
+    showPersistentError(
+      TRIGGERED_TITLES.LOCATION_DENIED,
+      'Please enable location permissions in your browser settings and try again'
+    )
+  } else if (!newError) {
+    clearToastByTitle(TRIGGERED_TITLES.LOCATION_DENIED)
+  }
 })
 
 // Specifically watch coordinates for the first time they become valid
